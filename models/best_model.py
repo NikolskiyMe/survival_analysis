@@ -1,15 +1,8 @@
-from models.gradient_boost.main import GradientBoostingModel
+"""
+Набор функций для сравнения моделей
+"""
+from typing import List
 
 
-class GetBestModel:
-    def __init__(self, df, x, y):
-        pass
-
-    def get_name(self):
-        pass
-
-    def get_parameters(self):
-        pass
-
-    def get_score(self):
-        pass
+def model_cmp(*models):
+    pass

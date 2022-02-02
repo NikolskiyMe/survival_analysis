@@ -1,10 +1,12 @@
+from typing import Any
+
 import numpy as np
 import pandas as pd
-import pandas.core.frame
+from numpy import ndarray
 from sklearn.preprocessing import LabelEncoder
 
 
-def prepare_df(path: str) -> pandas.core.frame.DataFrame:
+def prepare_df(path: str) -> tuple[Any, ndarray]:
 
     df = pd.read_csv(path, delimiter=",")
     df['gender'] = df['gender'].map({'мужской': 0, 'женский': 1})
@@ -28,16 +30,13 @@ def prepare_df(path: str) -> pandas.core.frame.DataFrame:
     label_encoder.fit(df['m'])
     df['m'] = label_encoder.transform(df['m'])
 
-    return df
-
-
-def get_xy(df):
     array = df.values
     x = array[:, 2:]
     y = array[:, :2]
     y[:, 1], y[:, 0] = y[:, 0].copy(), y[:, 1].copy()
-    dt = dtype = [('Status', '?'), ('Survival_in_days', '<f8')]
+    dt = [('Status', '?'), ('Survival_in_days', '<f8')]
     y = np.array([tuple(i) for i in y], dtype=dt)
 
     return x, y
+
 

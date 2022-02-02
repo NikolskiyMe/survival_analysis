@@ -1,8 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import GradientBoostingSurvivalAnalysis
 
-from utils.base import BaseMLClass
-
 n_estimators = [i * 5 for i in range(1, 21)]
 
 estimators = {
@@ -21,26 +19,28 @@ estimators = {
 }
 
 
-class GradientBoostingModel(BaseMLClass):
-    def __init__(self, x, y):
+class GradientBoostingModel:
+    def __init__(self, x, y, *params):
         test_size = 0.2
         random_state = 1
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=test_size,
             random_state=random_state)
+        self.model = GradientBoostingSurvivalAnalysis(params)
 
+    def set_params(self, n):
+        self.model.set_params(n_estimators=n)
+
+    def fit(self):
+        self.model.fit(self.x_train, self.y_train)
+
+    def predict_survival_function(self):
+        self.model.predict_survival_function(self.x_test)
+
+    # ToDo: @use_metrics([...])
     def get_score(self):
-        best_score = 0
+        cindex = self.model.score(self.x_test, self.y_test)
 
-        for n in n_estimators:
-            for name, est in estimators.items():
-                est.set_params(n_estimators=n)
-                est.fit(self.x_train, self.y_train)
-                cindex = est.score(self.x_test, self.y_test)
-
-                if cindex > best_score:
-                    best_score = cindex
-
-        return round(best_score, 3)
+        return round(cindex, 3)
 
 
 
