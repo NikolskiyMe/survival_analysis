@@ -2,6 +2,8 @@
 ---
 ### Подготовка:
 
+Перед началом работы следует поставить виртуальное окружение и установить зависимости:
+
 1. pip install --upgrade
 2. virtualenv -p python3.9 venv
 3. pip install -r requrements.txt
