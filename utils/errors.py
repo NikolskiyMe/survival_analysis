@@ -16,3 +16,8 @@ class ScoreError(Exception):
 class ParameterError(Exception):
     def __init__(self, message):
         self.msg = message
+
+
+class ReportGenerationError(Exception):
+    def __init__(self, message):
+        self.msg = message
