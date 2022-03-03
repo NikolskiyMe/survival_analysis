@@ -20,18 +20,35 @@ estimators = {
 
 
 class GradientBoostingModel:
-    def __init__(self, x, y, *params):
-        test_size = 0.2
-        random_state = 1
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=test_size,
-            random_state=random_state)
-        self.model = GradientBoostingSurvivalAnalysis(params)
+    def __init__(self, learning_rate=0.1, n_estimators=100,
+                 criterion='friedman_mse', min_samples_split=2,
+                 min_samples_leaf=1, min_weight_fraction_leaf=0.,
+                 max_depth=3, min_impurity_split=None,
+                 min_impurity_decrease=0., random_state=None, max_features=None,
+                 max_leaf_nodes=None, subsample=1.0, dropout_rate=0.0,
+                 verbose=0, ccp_alpha=0.0):
+        self.model = GradientBoostingSurvivalAnalysis(self, learning_rate,
+                                                      n_estimators,
+                                                      criterion,
+                                                      min_samples_split,
+                                                      min_samples_leaf,
+                                                      min_weight_fraction_leaf,
+                                                      max_depth,
+                                                      min_impurity_split,
+                                                      min_impurity_decrease,
+                                                      random_state,
+                                                      max_features,
+                                                      max_leaf_nodes,
+                                                      subsample,
+                                                      dropout_rate,
+                                                      verbose,
+                                                      ccp_alpha)
 
     def set_params(self, n):
         self.model.set_params(n_estimators=n)
 
-    def fit(self):
-        self.model.fit(self.x_train, self.y_train)
+    def fit(self, x_train, y_train):
+        self.model.fit(x_train, y_train)
 
     def predict_survival_function(self):
         self.model.predict_survival_function(self.x_test)
@@ -41,6 +58,3 @@ class GradientBoostingModel:
         cindex = self.model.score(self.x_test, self.y_test)
 
         return round(cindex, 3)
-
-
-
