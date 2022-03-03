@@ -5,8 +5,9 @@
 Перед началом работы следует поставить виртуальное окружение и установить зависимости:
 
 1. pip install --upgrade
-2. virtualenv -p python3.9 venv
+2. virtualenv -p python3.7 venv
 3. pip install -r requrements.txt
+4. source venv/bin/activate
 
 ---
 Черновик: https://docs.google.com/document/d/1NV6qwUJIMs888VbA2IpeuD0HKb9ICiGz-Rg5j45xMOE/edit#
