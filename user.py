@@ -1,10 +1,9 @@
 from sklearn.model_selection import train_test_split
 
-from models.gradient_boosting import GradientBoostingModel
-from models.random_survival_forest import RandomSF
+from models.ensemble_models.gradient_boosting_survival_analysis import GradientBoostingModel
+from models.ensemble_models.random_survival_forest import RandomSF
 from utils.data_preparation import prepare_df
 from utils.metrics import Score
-from utils.report_generation import get_report
 
 if __name__ == '__main__':
 
