@@ -1,27 +1,42 @@
-from sklearn.model_selection import train_test_split
-
 from sksurv.ensemble import RandomSurvivalForest
 
+from models.base_model import BaseModel
 
-class RandomSF:
-    def __init__(self, x, y, *params):
-        test_size = 0.2
-        random_state = 1
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, test_size=test_size,
-            random_state=random_state)
-        self.model = RandomSurvivalForest(params)
 
-    def set_params(self, n):
-        self.model.set_params(n_estimators=n)
+class RandomSurvivalForestModel(BaseModel):
+    def __init__(self,
+                 n_estimators=100,
+                 max_depth=None,
+                 min_samples_split=6,
+                 min_samples_leaf=3,
+                 min_weight_fraction_leaf=0.,
+                 max_features="auto",
+                 max_leaf_nodes=None,
+                 bootstrap=True,
+                 oob_score=False,
+                 n_jobs=None,
+                 random_state=None,
+                 verbose=0,
+                 warm_start=False,
+                 max_samples=None):
+        self.model = RandomSurvivalForest(self,
+                                          n_estimators,
+                                          max_depth,
+                                          min_samples_split,
+                                          min_samples_leaf,
+                                          min_weight_fraction_leaf,
+                                          max_features,
+                                          max_leaf_nodes,
+                                          bootstrap,
+                                          oob_score,
+                                          n_jobs,
+                                          random_state,
+                                          verbose,
+                                          warm_start,
+                                          max_samples)
 
-    def fit(self):
-        self.model.fit(self.x_train, self.y_train)
+    def fit(self, x_train, y_train):
+        self.model.fit(x_train, y_train)
 
-    def predict_survival_function(self):
-        self.model.predict_survival_function(self.x_test)
-
-    # ToDo: @use_metrics([...])
-    def get_score(self):
-        cindex = self.model.score(self.x_test, self.y_test)
-
-        return round(cindex, 3)
+    def predict(self, x):
+        self.model.predict(x)

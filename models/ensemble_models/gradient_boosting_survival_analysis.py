@@ -3,14 +3,24 @@ from sksurv.ensemble import GradientBoostingSurvivalAnalysis
 from models.base_model import BaseModel
 
 
-class GradientBoostingModel(BaseModel):
-    def __init__(self, learning_rate=0.1, n_estimators=100,
-                 criterion='friedman_mse', min_samples_split=2,
-                 min_samples_leaf=1, min_weight_fraction_leaf=0.,
-                 max_depth=3, min_impurity_split=None,
-                 min_impurity_decrease=0., random_state=None, max_features=None,
-                 max_leaf_nodes=None, subsample=1.0, dropout_rate=0.0,
-                 verbose=0, ccp_alpha=0.0):
+class GradientBoostingSurvivalAnalysisModel(BaseModel):
+    def __init__(self,
+                 learning_rate=0.1,
+                 n_estimators=100,
+                 criterion='friedman_mse',
+                 min_samples_split=2,
+                 min_samples_leaf=1,
+                 min_weight_fraction_leaf=0.,
+                 max_depth=3,
+                 min_impurity_split=None,
+                 min_impurity_decrease=0.,
+                 random_state=None,
+                 max_features=None,
+                 max_leaf_nodes=None,
+                 subsample=1.0,
+                 dropout_rate=0.0,
+                 verbose=0,
+                 ccp_alpha=0.0):
         self.model = GradientBoostingSurvivalAnalysis(self, learning_rate,
                                                       n_estimators,
                                                       criterion,
@@ -34,9 +44,4 @@ class GradientBoostingModel(BaseModel):
     def predict(self, x):
         self.model.predict(x)
 
-    def set_params(self, n):
-        self.model.set_params(n_estimators=n)
-
-    def predict_survival_function(self):
-        self.model.predict_survival_function(self.x_test)
 
