@@ -108,6 +108,7 @@ class IntegratedBrierScore(ScoreBaseA):
         return metric
 
 
+# ToDo: Все, что ниже - переписать,
 class AsConcordanceIndexIpcwScorer(ScoreBaseB):
     def __init__(self, estimator, tau=None, tied_tol=1e-08):
         super().__init__(estimator)
@@ -146,4 +147,3 @@ class AsIntegratedBrierScoreScorer(ScoreBaseB):
         metric = as_integrated_brier_score_scorer(self.estimator,
                                                   self.times)
         return metric
-
