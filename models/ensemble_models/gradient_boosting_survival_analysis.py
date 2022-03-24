@@ -21,7 +21,7 @@ class GradientBoostingSurvivalAnalysisModel(BaseModel):
                  dropout_rate=0.0,
                  verbose=0,
                  ccp_alpha=0.0):
-        self.model = GradientBoostingSurvivalAnalysis(self, learning_rate,
+        self.model = GradientBoostingSurvivalAnalysis(learning_rate,
                                                       n_estimators,
                                                       criterion,
                                                       min_samples_split,
@@ -44,4 +44,5 @@ class GradientBoostingSurvivalAnalysisModel(BaseModel):
     def predict(self, x):
         self.model.predict(x)
 
-
+    def __repr__(self):
+        return 'БУСТИНГ'

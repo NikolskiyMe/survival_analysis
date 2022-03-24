@@ -29,12 +29,12 @@ class Info:
                         'AsCumulativeDynamicAucScorer',
                         'AsIntegratedBrierScoreScorer']
 
+    @property
     def models(self):
         info = f'{self.ensemble_models} {self.linear_models} ' \
                f'{self.ssvm_models} {self.trees_models}'
 
-        print(info)
+        return info
 
     def metrics(self):
-        info = f'{self.metrics}'
-        print(info)
+        return self.metrics

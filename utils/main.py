@@ -10,25 +10,27 @@ class Experiment:
         self.x = x
         self.y = y
 
-    def start(self, models, metrics):
-        results = {}
-        for model in models:
-            x_train, x_test, y_train, y_test = train_test_split(self.x, self.y,
-                                                                test_size=0.1,
-                                                                random_state=1)
-            model.fit(x_train, y_train)
+    def start(self, models=None, metrics=None):
+        if models is None:
+            models = []
+        if metrics is None:
+            metrics = []
 
-            model.predict(x_train)
+        results = {}
+        results['RSF'] = []
+
+        x_train, x_test, y_train, y_test = train_test_split(self.x, self.y,
+                                                             test_size=0.1,
+                                                            random_state=1)
+        for model in models:
+            est = model.fit(self.x, self.y)
+            print(self.x)
+            pred = model.predict(x_train)
             for metric in metrics:
-                if metric in group1:
-                    "тут передаются y_train и y_test, заносим в таблицу"
-                    result = metric(y_train, y_test)
-                    pass
-                elif metric in group2:
-                    "тут предсказываются ф-ии, отрисовать их в отчет"
-                    pass
-                else:
-                    "тут cindex censored"
-                    pass
-                result = metric
-                results[model.name] = result
+                survs = est.predict_survival_function(self.x)
+                preds = [fn(1825) for fn in survs]
+
+                metric = metric(y_train, y_test, preds)
+
+                print('!!!!!!!!!!!!' + metric.score + '!!!!!!!!')
+                results[model.name].append(metric.score)

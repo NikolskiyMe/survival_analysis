@@ -10,15 +10,14 @@ class CoxPHSurvivalAnalysisModel(BaseModel):
                  n_iter=100,
                  tol=1e-9,
                  verbose=0):
-        self.model = CoxPHSurvivalAnalysis(self,
-                                           alpha,
+        self.model = CoxPHSurvivalAnalysis(alpha,
                                            ties,
                                            n_iter,
                                            tol,
                                            verbose)
 
     def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
+        return self.model.fit(x_train, y_train)
 
     def predict(self, x):
         self.model.predict(x)

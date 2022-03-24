@@ -33,7 +33,7 @@ class ScoreBaseB(ABC):
 
 
 class BrierScore(ScoreBaseA):
-    def __init__(self, survival_train, survival_test, estimate, times):
+    def __init__(self, survival_train=None, survival_test=None, estimate=None, times=None):
         super().__init__(survival_train, survival_test, estimate)
         self.times = times
 

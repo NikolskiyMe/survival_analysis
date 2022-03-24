@@ -17,8 +17,7 @@ class CoxnetSurvivalAnalysisModel(BaseModel):
                  verbose=False,
                  fit_baseline_model=False
                  ):
-        self.model = CoxnetSurvivalAnalysis(self,
-                                            n_alphas,
+        self.model = CoxnetSurvivalAnalysis(n_alphas,
                                             alphas,
                                             alpha_min_ratio,
                                             l1_ratio,

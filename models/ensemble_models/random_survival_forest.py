@@ -19,8 +19,7 @@ class RandomSurvivalForestModel(BaseModel):
                  verbose=0,
                  warm_start=False,
                  max_samples=None):
-        self.model = RandomSurvivalForest(self,
-                                          n_estimators,
+        self.model = RandomSurvivalForest(n_estimators,
                                           max_depth,
                                           min_samples_split,
                                           min_samples_leaf,
@@ -36,7 +35,11 @@ class RandomSurvivalForestModel(BaseModel):
                                           max_samples)
 
     def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
+        return self.model.fit(x_train, y_train)
 
     def predict(self, x):
         self.model.predict(x)
+
+    @property
+    def name(self):
+        return('RSF')
