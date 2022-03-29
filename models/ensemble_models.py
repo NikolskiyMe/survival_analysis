@@ -153,7 +153,4 @@ class RandomSurvivalForestModel(BaseModel):
     def predict(self, x):
         self.model.predict(x)
 
-    @property
-    def name(self):
-        return('RSF')
 

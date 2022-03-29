@@ -13,3 +13,6 @@ class BaseModel(ABC):
     def predict(self, x):
         pass
 
+    @property
+    def name(self):
+        return self.__class__.__name__

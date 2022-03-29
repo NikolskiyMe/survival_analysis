@@ -19,6 +19,7 @@ if __name__ == '__main__':
     print(i.metrics)
     print(i.models)
 
+    # Подготовка данных
     x, y = prepare_df('/Users/vladimirnikolskiy/Desktop/practice/Диплом/data.csv')
 
     # while True:

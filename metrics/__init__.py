@@ -14,6 +14,8 @@ __all__ = ['BrierScore',
            'ConcordanceIndexIpcw',
            'CumulativeDynamicAuc',
            'IntegratedBrierScore',
-           'AsConcordanceIndexIpcwScorer',
-           'AsCumulativeDynamicAucScorer',
-           'AsIntegratedBrierScoreScorer']
+           # ToDo: вернуть после переписывания классов
+           # 'AsConcordanceIndexIpcwScorer',
+           # 'AsCumulativeDynamicAucScorer',
+           # 'AsIntegratedBrierScoreScorer'
+]
