@@ -70,7 +70,7 @@ class ConcordanceIndexIpcw(ScoreBaseA):
 
     @property
     def score(self):
-        metric = concordance_index_ipcw(self.survival_train,
+        metric, _, _, _, _ = concordance_index_ipcw(self.survival_train,
                                         self.survival_test,
                                         self.estimate,
                                         self.tau,

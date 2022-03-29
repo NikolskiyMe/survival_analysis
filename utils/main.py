@@ -23,14 +23,17 @@ class Experiment:
                                                              test_size=0.1,
                                                             random_state=1)
         for model in models:
-            est = model.fit(self.x, self.y)
-            print(self.x)
+            # fit/predict на моделях из списка
+            # ToDo: учесть методы для каждой модели
+            est = model.fit(x_train, y_train)
+            print(est)
             pred = model.predict(x_train)
             for metric in metrics:
+                # ToDo: учесть методы метрик ( )
                 survs = est.predict_survival_function(self.x)
                 preds = [fn(1825) for fn in survs]
 
-                metric = metric(y_train, y_test, preds)
+                metric = metric(y_train, y_test, preds, 1825)
 
                 print('!!!!!!!!!!!!' + metric.score + '!!!!!!!!')
                 results[model.name].append(metric.score)
