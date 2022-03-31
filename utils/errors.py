@@ -21,3 +21,9 @@ class ParameterError(Exception):
 class ReportGenerationError(Exception):
     def __init__(self, message):
         self.msg = message
+
+
+class NoComparablePairException(ValueError):
+    """An error indicating that data of censored event times
+    does not contain one or more comparable pairs.
+    """

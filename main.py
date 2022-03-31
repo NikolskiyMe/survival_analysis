@@ -22,7 +22,8 @@ if __name__ == '__main__':
     experiment = Experiment(x, y)
     models = [GradientBoostingSurvivalAnalysisModel,
               ExtraSurvivalTreesModel,
-              RandomSurvivalForestModel
+              RandomSurvivalForestModel,
+              SurvivalTreeModel
               ]
-    metrics = [BrierScore, ConcordanceIndexIpcw]
+    metrics = [BrierScore, ConcordanceIndexIpcw, ConcordanceIndexCensored]
     experiment.start(models, metrics)  # генерация отчета

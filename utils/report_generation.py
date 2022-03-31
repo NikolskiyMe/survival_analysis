@@ -11,11 +11,12 @@ from fpdf import FPDF
 #  3. Если неудача - raise CreateReportError
 #  4. Расширить столбец имени модели/использовать алиасы
 
-def get_report(report_name: str, result: dict) -> None:
+def get_report(report_name: str, result: dict, param: tuple = None) -> None:
     """
     :param report_name: имя файла с отчетом
     :param result: словарь вида {(<имя модели: str>, <список параметров: str>): {<имя метрики>: <результат>, ...}, ...}
     :return: None
+    :param: Кортеж с параметрами модели и временем обучения
     """
     pdf = FPDF(format='letter', unit='in')
 

@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sksurv.ensemble import GradientBoostingSurvivalAnalysis
 from sksurv.metrics import brier_score
 
+from metrics.base import c_index_censored
 from .plt_helper import draw_function
 from .report_generation import get_report
 
@@ -36,7 +37,7 @@ class Experiment:
                                                             random_state=1)
         for model in models:
             print(f'{model.__name__} is fitting ...')
-
+            # ToDo: перетащить время в отчет
             start_ts = time.time()
             est = model().fit(x_train, y_train)
             end_ts = time.time()
@@ -46,11 +47,21 @@ class Experiment:
             print(f'Fit time for {model.__name__}: {tm}')
 
             chf_funcs = est.predict_cumulative_hazard_function(self.x)
-
             surv_funcs = est.predict_survival_function(self.x)
 
-            y = est.predict(self.x)
+            y = est.predict(x_test)
 
+            print(y_train)
+            true_times = [y[1] for y in y_train]
+            true_events = [y[0] for y in y_train]
+            pred_risks = [fn(800) for fn in surv_funcs][:3240]
+
+            print(len(true_times), len(true_events), len(pred_risks))
+
+            cindex = c_index_censored(pred_risks, true_times, true_events)
+            print(cindex)
+
+            """
             for metric in metrics:
                 m = metric(self.y, self.y, surv_funcs)
                 print(f'{m.name} for {model.__name__}: {m.score}')
@@ -59,9 +70,10 @@ class Experiment:
                 # draw_function(surv_funcs)  # survival_function
 
                 results[model.__name__][metric.__name__].append(m.score[0])
+            """
 
         # ToDo: добавить в словарь параметры модели
 
         glob = globals()
         e_n = glob['experiment_num']
-        get_report(f'Experiment_{e_n}', results)
+        # get_report(f'Experiment_{e_n}', results)
