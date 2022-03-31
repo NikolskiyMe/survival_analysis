@@ -1,3 +1,5 @@
+import time
+
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import GradientBoostingSurvivalAnalysis
@@ -34,9 +36,14 @@ class Experiment:
                                                             random_state=1)
         for model in models:
             print(f'{model.__name__} is fitting ...')
-            # ToDo: добавить tqdm для замера времени
+
+            start_ts = time.time()
             est = model().fit(x_train, y_train)
+            end_ts = time.time()
+            tm = end_ts - start_ts
+
             print(f'Fit {model.__name__}: OK')
+            print(f'Fit time for {model.__name__}: {tm}')
 
             chf_funcs = est.predict_cumulative_hazard_function(self.x)
 

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from utils.time_measurement import timer
 
 
 class BaseModel:
