@@ -33,7 +33,7 @@
   5. ToDo в коде
   6. R lib
 
-![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working3.png)
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working4.png)
 
 ---
 
