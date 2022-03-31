@@ -48,14 +48,12 @@ class Experiment:
                 m = metric(self.y, self.y, surv_funcs)
                 print(f'{m.name} for {model.__name__}: {m.score}')
 
-                # ToDo: перенести метрики в отчет
                 # draw_function(chf_funcs)  # cumulative hazard function
                 # draw_function(surv_funcs)  # survival_function
 
                 results[model.__name__][metric.__name__].append(m.score[0])
 
         # ToDo: добавить в словарь параметры модели
-        print(f'Этот словарь {results} передавать в генератор отчета')
 
         glob = globals()
         e_n = glob['experiment_num']

@@ -6,10 +6,10 @@ from fpdf import FPDF
 
 
 # ToDo:
-#  1. Занесение в таблицу result
-#  2. Отображать графики -- найти как вставлять в pdf
-#  3. Выделять цветом лучшие значения
-#  4. Если неудача - raise CreateReportError
+#  1. Отображать графики -- найти как вставлять в pdf
+#  2. Выделять цветом лучшие значения
+#  3. Если неудача - raise CreateReportError
+#  4. Расширить столбец имени модели/использовать алиасы
 
 def get_report(report_name: str, result: dict) -> None:
     """
@@ -37,7 +37,6 @@ def get_report(report_name: str, result: dict) -> None:
         for metric in header[3:]:
             line.append(result[model_name][metric][0])
         data.append(line)
-        # data.append(['model', 'parameteres', 'time', 'BrierScore', 'ConcordanceIndexIpcw'])
 
     pdf.set_font('Times', 'B', 14.0)
     pdf.cell(epw, 0.0, str(report_name).replace('_', ' '), align='C')
@@ -53,4 +52,4 @@ def get_report(report_name: str, result: dict) -> None:
         pdf.ln(2 * th)
 
     report_name += '.pdf'
-    pdf.output(report_name, 'F')
+    pdf.output(f'reports/{report_name}', 'F')
