@@ -15,6 +15,8 @@
 
 (Пока что сохраняются в корне)
 
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/diplom.png)
+
 ---
 ### Модели
 
