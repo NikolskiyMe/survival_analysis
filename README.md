@@ -1,6 +1,6 @@
 # survival_analysis framework
 ---
-### Подготовка:
+### Подготовка
 
 Перед началом работы следует поставить виртуальное окружение и установить зависимости:
 
@@ -9,11 +9,13 @@
 3. pip install -r requrements.txt
 4. source venv/bin/activate
 ---
-### Отчеты:
+### Отчеты
 
 Отчеты генерируются в pdf формат после каждого проведенного эксперимента и сохраняются в директорию "reports"
 
 (Пока что сохраняются в корне)
+
+Шаблон отчета: 
 
 ![Image alt](https://github.com/NikolskiyMe/pic/blob/main/diplom.png)
 
@@ -21,7 +23,12 @@
 ### Модели
 
 1. Все из библиотеки scikit-survival: https://scikit-survival.readthedocs.io/en/stable/index.html
-2. Из библиотеки R
+2. Из библиотеки R - добавить импорт из CRAN
+
+---
+### Что работает на данный момент
+
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/sa_working.png)
 
 ---
 
