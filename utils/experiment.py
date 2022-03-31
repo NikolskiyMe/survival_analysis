@@ -45,8 +45,8 @@ class Experiment:
             y = est.predict(self.x)
 
             for metric in metrics:
-                m = metric(self.y, self.y, surv_funcs, 900)
-                print(f'{m.name}: {m.score}')
+                m = metric(self.y, self.y, surv_funcs, 500)
+                print(f'{m.name} for {model.__name__}: {m.score}')
 
                 # ToDo: перенести метрики в отчет
                 # draw_function(chf_funcs)  # cumulative hazard function
