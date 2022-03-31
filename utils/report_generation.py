@@ -24,9 +24,20 @@ def get_report(report_name: str, result: dict) -> None:
     epw = pdf.w - 2 * pdf.l_margin
     col_width = epw / 5
 
-    # ToDo: обработка result
-    data = [['model', 'parameters', 'c index', 'brier score', 'time', 'params?'],
-            ['xxx', 0.00, 0.00, 1.00, '{"a": 1, "b": 2, "c": 3}']]
+    header = ['model', 'parameteres', 'time']
+    res_lst = list(result.values())
+    header.extend(res_lst[0].keys())
+
+    models = list(result.keys())
+
+    data = [header]
+
+    for model_name, models_res in result.items():
+        line = [model_name, 'params', 'time']
+        for metric in header[3:]:
+            line.append(result[model_name][metric][0])
+        data.append(line)
+        # data.append(['model', 'parameteres', 'time', 'BrierScore', 'ConcordanceIndexIpcw'])
 
     pdf.set_font('Times', 'B', 14.0)
     pdf.cell(epw, 0.0, str(report_name).replace('_', ' '), align='C')

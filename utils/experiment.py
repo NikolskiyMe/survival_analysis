@@ -54,6 +54,7 @@ class Experiment:
 
                 results[model.__name__][metric.__name__].append(m.score[0])
 
+        # ToDo: добавить в словарь параметры модели
         print(f'Этот словарь {results} передавать в генератор отчета')
 
         glob = globals()
