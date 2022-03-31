@@ -45,7 +45,7 @@ class Experiment:
             y = est.predict(self.x)
 
             for metric in metrics:
-                m = metric(self.y, self.y, surv_funcs, 500)
+                m = metric(self.y, self.y, surv_funcs)
                 print(f'{m.name} for {model.__name__}: {m.score}')
 
                 # ToDo: перенести метрики в отчет

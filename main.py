@@ -24,5 +24,5 @@ if __name__ == '__main__':
               ExtraSurvivalTreesModel,
               RandomSurvivalForestModel
               ]
-    metrics = [BrierScore]
+    metrics = [BrierScore, ConcordanceIndexIpcw]
     experiment.start(models, metrics)  # генерация отчета

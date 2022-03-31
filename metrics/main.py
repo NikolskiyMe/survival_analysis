@@ -41,7 +41,7 @@ class ScoreBaseB(ABC):
 
 
 class BrierScore(ScoreBaseA):
-    def __init__(self, survival_train=None, survival_test=None, estimate=None, times=None):
+    def __init__(self, survival_train=None, survival_test=None, estimate=None, times=500):
         estimate = [fn(times) for fn in estimate]
         super().__init__(survival_train, survival_test, estimate)
         self.times = times
@@ -81,6 +81,7 @@ class ConcordanceIndexCensored:
 
 class ConcordanceIndexIpcw(ScoreBaseA):
     def __init__(self, survival_train, survival_test, estimate, tau=None, tied_tol=1e-08):
+        estimate = [fn(500) for fn in estimate]
         super().__init__(survival_train, survival_test, estimate)
         self.tau = tau
         self.tied_tol = tied_tol
@@ -88,11 +89,11 @@ class ConcordanceIndexIpcw(ScoreBaseA):
     @property
     def score(self):
         metric, _, _, _, _ = concordance_index_ipcw(self.survival_train,
-                                        self.survival_test,
-                                        self.estimate,
-                                        self.tau,
-                                        self.tied_tol)
-        return metric
+                                                    self.survival_test,
+                                                    self.estimate,
+                                                    self.tau,
+                                                    self.tied_tol)
+        return [metric]  # ToDo: это костыль! Разобраться почему в BS лист, а тут число
 
     @property
     def name(self):
