@@ -20,6 +20,8 @@ if __name__ == '__main__':
 
     # Проведение эксперимента
     experiment = Experiment(x, y)
-    models = [CoxPHSurvivalAnalysisModel(), GradientBoostingSurvivalAnalysisModel()]
-    metrics = [ConcordanceIndexIpcw, BrierScore, ]
+    # models = [CoxPHSurvivalAnalysisModel(), GradientBoostingSurvivalAnalysisModel()]
+    # metrics = [ConcordanceIndexIpcw, BrierScore]
+    models = []
+    metrics = []
     experiment.start(models, metrics)  # генерация отчета

@@ -14,7 +14,7 @@ from fpdf import FPDF
 def get_report(report_name: str, result: dict) -> None:
     """
     :param report_name: имя файла с отчетом
-    :param result: словарь вида {<имя модели>: {<имя метрики>: <результат>, ...}, ...}
+    :param result: словарь вида {(<имя модели: str>, <список параметров: str>): {<имя метрики>: <результат>, ...}, ...}
     :return: None
     """
     pdf = FPDF(format='letter', unit='in')
@@ -25,11 +25,11 @@ def get_report(report_name: str, result: dict) -> None:
     col_width = epw / 5
 
     # ToDo: обработка result
-    data = [['model', 'c index', 'brier score', 'time', 'params?'],
+    data = [['model', 'parameters', 'c index', 'brier score', 'time', 'params?'],
             ['xxx', 0.00, 0.00, 1.00, '{"a": 1, "b": 2, "c": 3}']]
 
     pdf.set_font('Times', 'B', 14.0)
-    pdf.cell(epw, 0.0, 'Report', align='C')
+    pdf.cell(epw, 0.0, str(report_name).replace('_', ' '), align='C')
     pdf.set_font('Times', '', 10.0)
     pdf.ln(0.5)
 
