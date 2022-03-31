@@ -20,6 +20,9 @@ if __name__ == '__main__':
 
     # Проведение эксперимента
     experiment = Experiment(x, y)
-    models = [GradientBoostingSurvivalAnalysisModel, ExtraSurvivalTreesModel]
+    models = [GradientBoostingSurvivalAnalysisModel,
+              ExtraSurvivalTreesModel,
+              RandomSurvivalForestModel
+              ]
     metrics = [BrierScore]
     experiment.start(models, metrics)  # генерация отчета
