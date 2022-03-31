@@ -26,11 +26,11 @@ class Experiment:
         if metrics is None:
             metrics = []
 
-        results = {}
-        results['RSF'] = []
+        results = {m.__name__: {s.__name__: [] for s in metrics} for m in models}
 
-        x_train, x_test, y_train, y_test = train_test_split(self.x, self.y,
-                                                             test_size=0.1,
+        x_train, x_test, y_train, y_test = train_test_split(self.x,
+                                                            self.y,
+                                                            test_size=0.1,
                                                             random_state=1)
         for model in models:
             print(f'{model.__name__} is fitting ...')
@@ -52,7 +52,9 @@ class Experiment:
                 # draw_function(chf_funcs)  # cumulative hazard function
                 # draw_function(surv_funcs)  # survival_function
 
-                # results[model.name].append(metric.score) - для чисел
+                results[model.__name__][metric.__name__].append(m.score[0])
+
+        print(f'Этот словарь {results} передавать в генератор отчета')
 
         glob = globals()
         e_n = glob['experiment_num']
