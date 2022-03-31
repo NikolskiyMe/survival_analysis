@@ -5,11 +5,15 @@ class BaseModel:
     """
     Базовый класс для всех моделей
     """
-    def fit(self, x, y):
-        pass
+    def __init__(self, model):
+        self.model = model
+
+    def fit(self, x_train, y_train):
+        return self.model.fit(x_train, y_train)
 
     def predict(self, x):
-        pass
+        self.model.predict(x)
 
     def name(self):
         return self.__class__.__name__
+

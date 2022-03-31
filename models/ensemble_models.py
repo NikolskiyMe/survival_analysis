@@ -9,21 +9,17 @@ from models.base_model import BaseModel
 
 
 class ComponentwiseGradientBoostingSurvivalAnalysisModel(BaseModel):
-    def __init__(self,
-                 loss="coxph",
-                 learning_rate=0.1,
-                 n_estimators=100,
-                 subsample=1.0,
-                 dropout_rate=0,
-                 random_state=None,
-                 verbose=0):
-        self.model = ComponentwiseGradientBoostingSurvivalAnalysis(loss,
-                                                                   learning_rate,
-                                                                   n_estimators,
-                                                                   subsample,
-                                                                   dropout_rate,
-                                                                   random_state,
-                                                                   verbose)
+    def __init__(self, loss="coxph", learning_rate=0.1,
+                 n_estimators=100, subsample=1.0, dropout_rate=0,
+                 random_state=None, verbose=0):
+        model = ComponentwiseGradientBoostingSurvivalAnalysis(loss,
+                                                              learning_rate,
+                                                              n_estimators,
+                                                              subsample,
+                                                              dropout_rate,
+                                                              random_state,
+                                                              verbose)
+        super().__init__(model)
 
 
 class ExtraSurvivalTreesModel(BaseModel):
@@ -42,20 +38,21 @@ class ExtraSurvivalTreesModel(BaseModel):
                  verbose=0,
                  warm_start=False,
                  max_samples=None):
-        self.model = ExtraSurvivalTrees(n_estimators,
-                                        max_depth,
-                                        min_samples_split,
-                                        min_samples_leaf,
-                                        min_weight_fraction_leaf,
-                                        max_features,
-                                        max_leaf_nodes,
-                                        bootstrap,
-                                        oob_score,
-                                        n_jobs,
-                                        random_state,
-                                        verbose,
-                                        warm_start,
-                                        max_samples)
+        model = ExtraSurvivalTrees(n_estimators,
+                                   max_depth,
+                                   min_samples_split,
+                                   min_samples_leaf,
+                                   min_weight_fraction_leaf,
+                                   max_features,
+                                   max_leaf_nodes,
+                                   bootstrap,
+                                   oob_score,
+                                   n_jobs,
+                                   random_state,
+                                   verbose,
+                                   warm_start,
+                                   max_samples)
+        super().__init__(model)
 
 
 class GradientBoostingSurvivalAnalysisModel(BaseModel):
@@ -76,22 +73,23 @@ class GradientBoostingSurvivalAnalysisModel(BaseModel):
                  dropout_rate=0.0,
                  verbose=0,
                  ccp_alpha=0.0):
-        self.model = GradientBoostingSurvivalAnalysis(learning_rate,
-                                                      n_estimators,
-                                                      criterion,
-                                                      min_samples_split,
-                                                      min_samples_leaf,
-                                                      min_weight_fraction_leaf,
-                                                      max_depth,
-                                                      min_impurity_split,
-                                                      min_impurity_decrease,
-                                                      random_state,
-                                                      max_features,
-                                                      max_leaf_nodes,
-                                                      subsample,
-                                                      dropout_rate,
-                                                      verbose,
-                                                      ccp_alpha)
+        model = GradientBoostingSurvivalAnalysis(learning_rate,
+                                                 n_estimators,
+                                                 criterion,
+                                                 min_samples_split,
+                                                 min_samples_leaf,
+                                                 min_weight_fraction_leaf,
+                                                 max_depth,
+                                                 min_impurity_split,
+                                                 min_impurity_decrease,
+                                                 random_state,
+                                                 max_features,
+                                                 max_leaf_nodes,
+                                                 subsample,
+                                                 dropout_rate,
+                                                 verbose,
+                                                 ccp_alpha)
+        super().__init__(model)
 
 
 class RandomSurvivalForestModel(BaseModel):
@@ -110,20 +108,18 @@ class RandomSurvivalForestModel(BaseModel):
                  verbose=0,
                  warm_start=False,
                  max_samples=None):
-        self.model = RandomSurvivalForest(n_estimators,
-                                          max_depth,
-                                          min_samples_split,
-                                          min_samples_leaf,
-                                          min_weight_fraction_leaf,
-                                          max_features,
-                                          max_leaf_nodes,
-                                          bootstrap,
-                                          oob_score,
-                                          n_jobs,
-                                          random_state,
-                                          verbose,
-                                          warm_start,
-                                          max_samples)
-
-
-
+        model = RandomSurvivalForest(n_estimators,
+                                     max_depth,
+                                     min_samples_split,
+                                     min_samples_leaf,
+                                     min_weight_fraction_leaf,
+                                     max_features,
+                                     max_leaf_nodes,
+                                     bootstrap,
+                                     oob_score,
+                                     n_jobs,
+                                     random_state,
+                                     verbose,
+                                     warm_start,
+                                     max_samples)
+        super().__init__(model)

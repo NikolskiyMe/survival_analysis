@@ -25,20 +25,21 @@ class FastKernelSurvivalSVMModel(BaseModel):
                  optimizer=None,
                  random_state=None,
                  timeit=False):
-        self.model = FastKernelSurvivalSVM(alpha,
-                                           rank_ratio,
-                                           fit_intercept,
-                                           kernel,
-                                           gamma,
-                                           degree,
-                                           coef0,
-                                           kernel_params,
-                                           max_iter,
-                                           verbose,
-                                           tol,
-                                           optimizer,
-                                           random_state,
-                                           timeit)
+        model = FastKernelSurvivalSVM(alpha,
+                                      rank_ratio,
+                                      fit_intercept,
+                                      kernel,
+                                      gamma,
+                                      degree,
+                                      coef0,
+                                      kernel_params,
+                                      max_iter,
+                                      verbose,
+                                      tol,
+                                      optimizer,
+                                      random_state,
+                                      timeit)
+        super().__init__(model)
 
 
 class FastSurvivalSVMModel(BaseModel):
@@ -52,15 +53,16 @@ class FastSurvivalSVMModel(BaseModel):
                  optimizer=None,
                  random_state=None,
                  timeit=False):
-        self.model = FastSurvivalSVM(alpha,
-                                     rank_ratio,
-                                     fit_intercept,
-                                     max_iter,
-                                     verbose,
-                                     tol,
-                                     optimizer,
-                                     random_state,
-                                     timeit)
+        model = FastSurvivalSVM(alpha,
+                                rank_ratio,
+                                fit_intercept,
+                                max_iter,
+                                verbose,
+                                tol,
+                                optimizer,
+                                random_state,
+                                timeit)
+        super().__init__(model)
 
 
 class HingeLossSurvivalSVMModel(BaseModel):
@@ -76,17 +78,18 @@ class HingeLossSurvivalSVMModel(BaseModel):
                  verbose=False,
                  timeit=None,
                  max_iter=None):
-        self.model = HingeLossSurvivalSVM(solver,
-                                          alpha,
-                                          kernel,
-                                          gamma,
-                                          degree,
-                                          coef0,
-                                          kernel_params,
-                                          pairs,
-                                          verbose,
-                                          timeit,
-                                          max_iter)
+        model = HingeLossSurvivalSVM(solver,
+                                     alpha,
+                                     kernel,
+                                     gamma,
+                                     degree,
+                                     coef0,
+                                     kernel_params,
+                                     pairs,
+                                     verbose,
+                                     timeit,
+                                     max_iter)
+        super().__init__(model)
 
 
 class MinlipSurvivalAnalysisModel(BaseModel):
@@ -102,17 +105,18 @@ class MinlipSurvivalAnalysisModel(BaseModel):
                  verbose=False,
                  timeit=None,
                  max_iter=None):
-        self.model = MinlipSurvivalAnalysis(solver,
-                                            alpha,
-                                            kernel,
-                                            gamma,
-                                            degree,
-                                            coef0,
-                                            kernel_params,
-                                            pairs,
-                                            verbose,
-                                            timeit,
-                                            max_iter)
+        model = MinlipSurvivalAnalysis(solver,
+                                       alpha,
+                                       kernel,
+                                       gamma,
+                                       degree,
+                                       coef0,
+                                       kernel_params,
+                                       pairs,
+                                       verbose,
+                                       timeit,
+                                       max_iter)
+        super().__init__(model)
 
 
 class NaiveSurvivalSVMModel(BaseModel):
@@ -125,11 +129,12 @@ class NaiveSurvivalSVMModel(BaseModel):
                  verbose=0,
                  random_state=None,
                  max_iter=1000):
-        self.model = NaiveSurvivalSVM(penalty,
-                                      loss,
-                                      dual,
-                                      tol,
-                                      alpha,
-                                      verbose,
-                                      random_state,
-                                      max_iter)
+        model = NaiveSurvivalSVM(penalty,
+                                 loss,
+                                 dual,
+                                 tol,
+                                 alpha,
+                                 verbose,
+                                 random_state,
+                                 max_iter)
+        super().__init__(model)

@@ -14,11 +14,12 @@ class CoxPHSurvivalAnalysisModel(BaseModel):
                  n_iter=100,
                  tol=1e-9,
                  verbose=0):
-        self.model = CoxPHSurvivalAnalysis(alpha,
-                                           ties,
-                                           n_iter,
-                                           tol,
-                                           verbose)
+        model = CoxPHSurvivalAnalysis(alpha,
+                                      ties,
+                                      n_iter,
+                                      tol,
+                                      verbose)
+        super().__init__(model)
 
 
 class CoxnetSurvivalAnalysisModel(BaseModel):
@@ -33,20 +34,20 @@ class CoxnetSurvivalAnalysisModel(BaseModel):
                  tol=1e-7,
                  max_iter=100000,
                  verbose=False,
-                 fit_baseline_model=False
-                 ):
-        self.model = CoxnetSurvivalAnalysis(n_alphas,
-                                            alphas,
-                                            alpha_min_ratio,
-                                            l1_ratio,
-                                            penalty_factor,
-                                            normalize,
-                                            copy_X,
-                                            tol,
-                                            max_iter,
-                                            verbose,
-                                            fit_baseline_model
-                                            )
+                 fit_baseline_model=False):
+        model = CoxnetSurvivalAnalysis(n_alphas,
+                                       alphas,
+                                       alpha_min_ratio,
+                                       l1_ratio,
+                                       penalty_factor,
+                                       normalize,
+                                       copy_X,
+                                       tol,
+                                       max_iter,
+                                       verbose,
+                                       fit_baseline_model
+                                       )
+        super().__init__(model)
 
 
 class IPCRidgeModel(BaseModel):
@@ -58,10 +59,11 @@ class IPCRidgeModel(BaseModel):
                  max_iter=None,
                  tol=1e-3,
                  solver="auto"):
-        self.model = IPCRidge(alpha,
-                              fit_intercept,
-                              normalize,
-                              copy_X,
-                              max_iter,
-                              tol,
-                              solver)
+        model = IPCRidge(alpha,
+                         fit_intercept,
+                         normalize,
+                         copy_X,
+                         max_iter,
+                         tol,
+                         solver)
+        super().__init__(model)
