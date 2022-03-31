@@ -15,6 +15,8 @@
 
 (Пока что сохраняются в корне)
 
+Шаблон отчета: 
+
 ![Image alt](https://github.com/NikolskiyMe/pic/blob/main/diplom.png)
 
 ---
