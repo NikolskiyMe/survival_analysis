@@ -57,6 +57,7 @@ class ExtraSurvivalTreesModel(BaseModel):
 
 class GradientBoostingSurvivalAnalysisModel(BaseModel):
     def __init__(self,
+                 loss="coxph",
                  learning_rate=0.1,
                  n_estimators=100,
                  criterion='friedman_mse',
@@ -73,7 +74,8 @@ class GradientBoostingSurvivalAnalysisModel(BaseModel):
                  dropout_rate=0.0,
                  verbose=0,
                  ccp_alpha=0.0):
-        model = GradientBoostingSurvivalAnalysis(learning_rate,
+        model = GradientBoostingSurvivalAnalysis(loss,
+                                                 learning_rate,
                                                  n_estimators,
                                                  criterion,
                                                  min_samples_split,

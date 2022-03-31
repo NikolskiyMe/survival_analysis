@@ -9,7 +9,8 @@ class BaseModel:
         self.model = model
 
     def fit(self, x_train, y_train):
-        return self.model.fit(x_train, y_train)
+        res = self.model.fit(x_train, y_train)
+        return res
 
     def predict(self, x):
         self.model.predict(x)
