@@ -22,6 +22,10 @@ class ScoreBaseA(ABC):
     def score(self):
         pass
 
+    @abstractmethod
+    def name(self):
+        pass
+
 
 class ScoreBaseB(ABC):
     def __init__(self, estimator):
@@ -29,6 +33,10 @@ class ScoreBaseB(ABC):
 
     @abstractmethod
     def score(self):
+        pass
+
+    @abstractmethod
+    def name(self):
         pass
 
 
@@ -43,7 +51,11 @@ class BrierScore(ScoreBaseA):
                              self.survival_test,
                              self.estimate,
                              self.times)
-        return metric  # times, brier scores
+        return metric
+
+    @property
+    def name(self):
+        return 'Brier Score'
 
 
 class ConcordanceIndexCensored:
@@ -59,7 +71,11 @@ class ConcordanceIndexCensored:
                                             self.event_time,
                                             self.estimate,
                                             self.tied_tol)
-        return metric  # cindex, concordant, discordant, tied_risk, tied_time
+        return metric
+
+    @property
+    def name(self):
+        return 'C-Index censored'
 
 
 class ConcordanceIndexIpcw(ScoreBaseA):
@@ -77,6 +93,10 @@ class ConcordanceIndexIpcw(ScoreBaseA):
                                         self.tied_tol)
         return metric
 
+    @property
+    def name(self):
+        return 'C-Index ipcw'
+
 
 class CumulativeDynamicAuc(ScoreBaseA):
     def __init__(self, survival_train, survival_test, estimate, times, tied_tol=1e-08):
@@ -93,6 +113,10 @@ class CumulativeDynamicAuc(ScoreBaseA):
                                         self.tied_tol)
         return metric
 
+    @property
+    def name(self):
+        return 'Cumulative dynamic auc'
+
 
 class IntegratedBrierScore(ScoreBaseA):
     def __init__(self, survival_train, survival_test, estimate, times):
@@ -106,6 +130,10 @@ class IntegratedBrierScore(ScoreBaseA):
                                         self.estimate,
                                         self.times)
         return metric
+
+    @property
+    def name(self):
+        return 'Integrated Brier Score'
 
 
 # ToDo: Все, что ниже - переписать,
