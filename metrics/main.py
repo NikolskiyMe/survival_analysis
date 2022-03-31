@@ -42,15 +42,16 @@ class ScoreBaseB(ABC):
 
 class BrierScore(ScoreBaseA):
     def __init__(self, survival_train=None, survival_test=None, estimate=None, times=None):
+        estimate = [fn(times) for fn in estimate]
         super().__init__(survival_train, survival_test, estimate)
         self.times = times
 
     @property
     def score(self):
-        metric = brier_score(self.survival_train,
-                             self.survival_test,
-                             self.estimate,
-                             self.times)
+        _, metric = brier_score(self.survival_train,
+                                self.survival_test,
+                                self.estimate,
+                                self.times)
         return metric
 
     @property

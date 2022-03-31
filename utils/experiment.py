@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import GradientBoostingSurvivalAnalysis
+from sksurv.metrics import brier_score
 
 from .plt_helper import draw_function
 from .report_generation import get_report
@@ -32,20 +33,26 @@ class Experiment:
                                                              test_size=0.1,
                                                             random_state=1)
         for model in models:
-            # est = GradientBoostingSurvivalAnalysis().fit(x_train, y_train)
-            # print(type(est))
+            print(f'{model.__name__} is fitting ...')
+            # ToDo: добавить tqdm для замера времени
             est = model().fit(x_train, y_train)
-            print('ok')
+            print(f'Fit {model.__name__}: OK')
+
             chf_funcs = est.predict_cumulative_hazard_function(self.x)
+
             surv_funcs = est.predict_survival_function(self.x)
 
-            # draw_function(chf_funcs)
-            # draw_function(surv_funcs)
+            y = est.predict(self.x)
 
             for metric in metrics:
-                pass
+                m = metric(self.y, self.y, surv_funcs, 900)
+                print(f'{m.name}: {m.score}')
 
-                # results[model.name].append(metric.score)
+                # ToDo: перенести метрики в отчет
+                # draw_function(chf_funcs)  # cumulative hazard function
+                # draw_function(surv_funcs)  # survival_function
+
+                # results[model.name].append(metric.score) - для чисел
 
         glob = globals()
         e_n = glob['experiment_num']
