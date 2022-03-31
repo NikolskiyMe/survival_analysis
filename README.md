@@ -21,7 +21,7 @@
 ### Модели
 
 1. Все из библиотеки scikit-survival: https://scikit-survival.readthedocs.io/en/stable/index.html
-2. Из библиотеки R
+2. Из библиотеки R - добавить импорт из CRAN
 
 ---
 ### Что работает на данный момент
