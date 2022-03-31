@@ -1,4 +1,5 @@
 from sklearn.model_selection import train_test_split
+from .report_generation import get_report
 
 
 class Experiment:
@@ -37,3 +38,5 @@ class Experiment:
 
                 print('!!!!!!!!!!!!' + metric.score + '!!!!!!!!')
                 results[model.name].append(metric.score)
+
+

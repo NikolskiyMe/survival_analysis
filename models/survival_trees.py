@@ -13,8 +13,7 @@ class SurvivalTreeModel(BaseModel):
                  max_features=None,
                  random_state=None,
                  max_leaf_nodes=None):
-        self.model = SurvivalTree(self,
-                                  splitter,
+        self.model = SurvivalTree(splitter,
                                   max_depth,
                                   min_samples_split,
                                   min_samples_leaf,

@@ -1,19 +1,22 @@
-
 """
 Функционал формирования PDF отчета сессии пользователя
-
-ToDo List
-1. Сортировать по качеству
-2. Отображать графики -- найти как вставлять в pdf
-3. Выделять цветом
 """
 
 from fpdf import FPDF
 
 
-# ToDo: после получения результатов -> запись в таблицу
-#  // индексировать одинаковые модели
-def get_report(report_name: str):
+# ToDo:
+#  1. Занесение в таблицу result
+#  2. Отображать графики -- найти как вставлять в pdf
+#  3. Выделять цветом лучшие значения
+#  4. Если неудача - raise CreateReportError
+
+def get_report(report_name: str, result: dict) -> None:
+    """
+    :param report_name: имя файла с отчетом
+    :param result: словарь вида {<имя модели>: {<имя метрики>: <результат>, ...}, ...}
+    :return: None
+    """
     pdf = FPDF(format='letter', unit='in')
 
     pdf.add_page()
@@ -21,7 +24,7 @@ def get_report(report_name: str):
     epw = pdf.w - 2 * pdf.l_margin
     col_width = epw / 5
 
-    # ToDo: рефактор
+    # ToDo: обработка result
     data = [['model', 'c index', 'brier score', 'time', 'params?'],
             ['xxx', 0.00, 0.00, 1.00, '{"a": 1, "b": 2, "c": 3}']]
 

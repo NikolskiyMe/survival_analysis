@@ -70,8 +70,7 @@ class IPCRidgeModel(BaseModel):
                  max_iter=None,
                  tol=1e-3,
                  solver="auto"):
-        self.model = IPCRidge(self,
-                              alpha,
+        self.model = IPCRidge(alpha,
                               fit_intercept,
                               normalize,
                               copy_X,

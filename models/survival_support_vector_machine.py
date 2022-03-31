@@ -59,8 +59,7 @@ class FastSurvivalSVMModel(BaseModel):
                  optimizer=None,
                  random_state=None,
                  timeit=False):
-        self.model = FastSurvivalSVM(self,
-                                     alpha,
+        self.model = FastSurvivalSVM(alpha,
                                      rank_ratio,
                                      fit_intercept,
                                      max_iter,
@@ -90,8 +89,7 @@ class HingeLossSurvivalSVMModel(BaseModel):
                  verbose=False,
                  timeit=None,
                  max_iter=None):
-        self.model = HingeLossSurvivalSVM(self,
-                                          solver,
+        self.model = HingeLossSurvivalSVM(solver,
                                           alpha,
                                           kernel,
                                           gamma,
@@ -123,8 +121,7 @@ class MinlipSurvivalAnalysisModel(BaseModel):
                  verbose=False,
                  timeit=None,
                  max_iter=None):
-        self.model = MinlipSurvivalAnalysis(self,
-                                            solver,
+        self.model = MinlipSurvivalAnalysis(solver,
                                             alpha,
                                             kernel,
                                             gamma,
@@ -153,8 +150,7 @@ class NaiveSurvivalSVMModel(BaseModel):
                  verbose=0,
                  random_state=None,
                  max_iter=1000):
-        self.model = NaiveSurvivalSVM(self,
-                                      penalty,
+        self.model = NaiveSurvivalSVM(penalty,
                                       loss,
                                       dual,
                                       tol,

@@ -1,16 +1,12 @@
-from utils.data_preparation import prepare_df
 from utils.info import Info
-from utils.main import Experiment
+
+from utils.data_preparation import prepare_df
+from utils.experiment import Experiment
+# from utils.cross_validation import Validation
 
 from models import *
 
-from metrics.main import (
-    BrierScore,
-    ConcordanceIndexCensored,
-    ConcordanceIndexIpcw,
-    CumulativeDynamicAuc,
-    IntegratedBrierScore
-)
+from metrics import *
 
 
 if __name__ == '__main__':
@@ -22,8 +18,8 @@ if __name__ == '__main__':
     # Подготовка данных
     x, y = prepare_df('/Users/vladimirnikolskiy/Desktop/practice/Диплом/data.csv')
 
-    # while True:
+    # Проведение эксперимента
     experiment = Experiment(x, y)
-    models = [CoxPHSurvivalAnalysisModel()]
-    metrics = [ConcordanceIndexIpcw]
-    experiment.start(models, metrics)
+    models = [CoxPHSurvivalAnalysisModel(), GradientBoostingSurvivalAnalysisModel()]
+    metrics = [ConcordanceIndexIpcw, BrierScore]
+    experiment.start(models, metrics)  # генерация отчета

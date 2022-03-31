@@ -17,8 +17,7 @@ class ComponentwiseGradientBoostingSurvivalAnalysisModel(BaseModel):
                  dropout_rate=0,
                  random_state=None,
                  verbose=0):
-        self.model = ComponentwiseGradientBoostingSurvivalAnalysis(self,
-                                                                   loss,
+        self.model = ComponentwiseGradientBoostingSurvivalAnalysis(loss,
                                                                    learning_rate,
                                                                    n_estimators,
                                                                    subsample,
@@ -49,7 +48,7 @@ class ExtraSurvivalTreesModel(BaseModel):
                  verbose=0,
                  warm_start=False,
                  max_samples=None):
-        self.model = ExtraSurvivalTrees(self, n_estimators,
+        self.model = ExtraSurvivalTrees(n_estimators,
                                         max_depth,
                                         min_samples_split,
                                         min_samples_leaf,
