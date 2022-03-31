@@ -25,8 +25,7 @@ class FastKernelSurvivalSVMModel(BaseModel):
                  optimizer=None,
                  random_state=None,
                  timeit=False):
-        self.model = FastKernelSurvivalSVM(self,
-                                           alpha,
+        self.model = FastKernelSurvivalSVM(alpha,
                                            rank_ratio,
                                            fit_intercept,
                                            kernel,
@@ -40,12 +39,6 @@ class FastKernelSurvivalSVMModel(BaseModel):
                                            optimizer,
                                            random_state,
                                            timeit)
-
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
 
 
 class FastSurvivalSVMModel(BaseModel):
@@ -68,12 +61,6 @@ class FastSurvivalSVMModel(BaseModel):
                                      optimizer,
                                      random_state,
                                      timeit)
-
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
 
 
 class HingeLossSurvivalSVMModel(BaseModel):
@@ -101,12 +88,6 @@ class HingeLossSurvivalSVMModel(BaseModel):
                                           timeit,
                                           max_iter)
 
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
-
 
 class MinlipSurvivalAnalysisModel(BaseModel):
     def __init__(self,
@@ -133,12 +114,6 @@ class MinlipSurvivalAnalysisModel(BaseModel):
                                             timeit,
                                             max_iter)
 
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
-
 
 class NaiveSurvivalSVMModel(BaseModel):
     def __init__(self,
@@ -158,9 +133,3 @@ class NaiveSurvivalSVMModel(BaseModel):
                                       verbose,
                                       random_state,
                                       max_iter)
-
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)

@@ -21,9 +21,3 @@ class SurvivalTreeModel(BaseModel):
                                   max_features,
                                   random_state,
                                   max_leaf_nodes)
-
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)

@@ -20,12 +20,6 @@ class CoxPHSurvivalAnalysisModel(BaseModel):
                                            tol,
                                            verbose)
 
-    def fit(self, x_train, y_train):
-        return self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
-
 
 class CoxnetSurvivalAnalysisModel(BaseModel):
     def __init__(self,
@@ -54,12 +48,6 @@ class CoxnetSurvivalAnalysisModel(BaseModel):
                                             fit_baseline_model
                                             )
 
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
-
 
 class IPCRidgeModel(BaseModel):
     def __init__(self,
@@ -77,9 +65,3 @@ class IPCRidgeModel(BaseModel):
                               max_iter,
                               tol,
                               solver)
-
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)

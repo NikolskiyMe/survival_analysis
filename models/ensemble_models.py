@@ -25,12 +25,6 @@ class ComponentwiseGradientBoostingSurvivalAnalysisModel(BaseModel):
                                                                    random_state,
                                                                    verbose)
 
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
-
 
 class ExtraSurvivalTreesModel(BaseModel):
     def __init__(self,
@@ -62,12 +56,6 @@ class ExtraSurvivalTreesModel(BaseModel):
                                         verbose,
                                         warm_start,
                                         max_samples)
-
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
 
 
 class GradientBoostingSurvivalAnalysisModel(BaseModel):
@@ -105,15 +93,6 @@ class GradientBoostingSurvivalAnalysisModel(BaseModel):
                                                       verbose,
                                                       ccp_alpha)
 
-    def fit(self, x_train, y_train):
-        self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
-
-    def __repr__(self):
-        return 'БУСТИНГ'
-
 
 class RandomSurvivalForestModel(BaseModel):
     def __init__(self,
@@ -146,10 +125,5 @@ class RandomSurvivalForestModel(BaseModel):
                                           warm_start,
                                           max_samples)
 
-    def fit(self, x_train, y_train):
-        return self.model.fit(x_train, y_train)
-
-    def predict(self, x):
-        self.model.predict(x)
 
 
