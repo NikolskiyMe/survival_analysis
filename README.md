@@ -28,7 +28,7 @@
 ---
 ### Что работает на данный момент
 
-![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working1.png)
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working2.png)
 
 ---
 
