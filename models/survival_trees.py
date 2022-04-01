@@ -22,3 +22,7 @@ class SurvivalTreeModel(BaseModel):
                              random_state,
                              max_leaf_nodes)
         super().__init__(model)
+
+    @property
+    def name(self):
+        return 'SurvivalTree'

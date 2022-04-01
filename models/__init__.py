@@ -1,17 +1,17 @@
-from .ensemble_models import (
+from models.ensemble_models import (
     ComponentwiseGradientBoostingSurvivalAnalysisModel,
     ExtraSurvivalTreesModel,
     GradientBoostingSurvivalAnalysisModel,
     RandomSurvivalForestModel
 )
 
-from .linear_models import (
+from models.linear_models import (
     CoxPHSurvivalAnalysisModel,
     CoxnetSurvivalAnalysisModel,
     IPCRidgeModel
 )
 
-from .survival_support_vector_machine import (
+from models.survival_support_vector_machine import (
     FastKernelSurvivalSVMModel,
     FastSurvivalSVMModel,
     HingeLossSurvivalSVMModel,
@@ -19,7 +19,7 @@ from .survival_support_vector_machine import (
     NaiveSurvivalSVMModel
 )
 
-from .survival_trees import SurvivalTreeModel
+from models.survival_trees import SurvivalTreeModel
 
 __all__ = [
     'ComponentwiseGradientBoostingSurvivalAnalysisModel',
@@ -36,3 +36,4 @@ __all__ = [
     'NaiveSurvivalSVMModel',
     'SurvivalTreeModel'
 ]
+

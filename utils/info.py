@@ -20,11 +20,11 @@ class Info:
 
         self.trees_models = ['SurvivalTree']
 
-        self.metrics = ['BrierScore',
-                        'ConcordanceIndexCensored',
-                        'ConcordanceIndexIpcw',
-                        'CumulativeDynamicAuc',
-                        'IntegratedBrierScore',
+        self.metrics = ['brier_score',
+                        'c_index_ipcw',
+                        'cumulative_dynamic_auc',
+                        'integrated_brier_score',
+                        'c_index_censored',
                         'AsConcordanceIndexIpcwScorer',
                         'AsCumulativeDynamicAucScorer',
                         'AsIntegratedBrierScoreScorer']

@@ -22,21 +22,20 @@ def get_report(report_name: str, result: dict, param: tuple = None) -> None:
 
     pdf.add_page()
     pdf.set_font('Times', '', 10.0)
-    epw = pdf.w - 2 * pdf.l_margin
+    epw = pdf.w - 5 * pdf.l_margin
     col_width = epw / 5
 
     header = ['model', 'parameteres', 'time']
-    res_lst = list(result.values())
-    header.extend(res_lst[0].keys())
+    metrics = [m[0] for m in result['GBSA']]
 
-    models = list(result.keys())
+    header.extend(metrics)
 
     data = [header]
 
     for model_name, models_res in result.items():
         line = [model_name, 'params', 'time']
-        for metric in header[3:]:
-            line.append(result[model_name][metric][0])
+        for res in result[model_name]:
+            line.append(res[1])
         data.append(line)
 
     pdf.set_font('Times', 'B', 14.0)

@@ -1,21 +1,11 @@
 from .main import (
     BrierScore,
-    ConcordanceIndexCensored,
-    ConcordanceIndexIpcw,
-    CumulativeDynamicAuc,
-    IntegratedBrierScore,
-    AsConcordanceIndexIpcwScorer,
-    AsCumulativeDynamicAucScorer,
-    AsIntegratedBrierScoreScorer
+    CIndexIpcw,
+    CumulativeDynmicAuc,
+    IntegratedBrierScore
 )
 
 __all__ = ['BrierScore',
-           'ConcordanceIndexCensored',
-           'ConcordanceIndexIpcw',
-           'CumulativeDynamicAuc',
-           'IntegratedBrierScore',
-           # ToDo: вернуть после переписывания классов
-           # 'AsConcordanceIndexIpcwScorer',
-           # 'AsCumulativeDynamicAucScorer',
-           # 'AsIntegratedBrierScoreScorer'
-]
+           'CIndexIpcw',
+           'CumulativeDynmicAuc',
+           'IntegratedBrierScore']

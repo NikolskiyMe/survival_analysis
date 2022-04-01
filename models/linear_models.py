@@ -21,6 +21,10 @@ class CoxPHSurvivalAnalysisModel(BaseModel):
                                       verbose)
         super().__init__(model)
 
+    @property
+    def name(self):
+        return 'CoxPHSurvivalAnalysis'
+
 
 class CoxnetSurvivalAnalysisModel(BaseModel):
     def __init__(self,
@@ -49,6 +53,10 @@ class CoxnetSurvivalAnalysisModel(BaseModel):
                                        )
         super().__init__(model)
 
+    @property
+    def name(self):
+        return 'CoxnetSurvivalAnalysis'
+
 
 class IPCRidgeModel(BaseModel):
     def __init__(self,
@@ -67,3 +75,7 @@ class IPCRidgeModel(BaseModel):
                          tol,
                          solver)
         super().__init__(model)
+
+    @property
+    def name(self):
+        return 'IPCRidge'

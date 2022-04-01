@@ -41,6 +41,10 @@ class FastKernelSurvivalSVMModel(BaseModel):
                                       timeit)
         super().__init__(model)
 
+    @property
+    def name(self):
+        return 'FastKernelSurvivalSVM'
+
 
 class FastSurvivalSVMModel(BaseModel):
     def __init__(self,
@@ -63,6 +67,10 @@ class FastSurvivalSVMModel(BaseModel):
                                 random_state,
                                 timeit)
         super().__init__(model)
+
+    @property
+    def name(self):
+        return 'FastSurvivalSVM'
 
 
 class HingeLossSurvivalSVMModel(BaseModel):
@@ -91,6 +99,10 @@ class HingeLossSurvivalSVMModel(BaseModel):
                                      max_iter)
         super().__init__(model)
 
+    @property
+    def name(self):
+        return 'HingeLossSurvivalSVM'
+
 
 class MinlipSurvivalAnalysisModel(BaseModel):
     def __init__(self,
@@ -118,6 +130,10 @@ class MinlipSurvivalAnalysisModel(BaseModel):
                                        max_iter)
         super().__init__(model)
 
+    @property
+    def name(self):
+        return 'MinlipSurvivalAnalysis'
+
 
 class NaiveSurvivalSVMModel(BaseModel):
     def __init__(self,
@@ -138,3 +154,7 @@ class NaiveSurvivalSVMModel(BaseModel):
                                  random_state,
                                  max_iter)
         super().__init__(model)
+
+    @property
+    def name(self):
+        return 'NaiveSurvivalSVM'
