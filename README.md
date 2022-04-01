@@ -13,7 +13,7 @@
 
 Отчеты генерируются в pdf формат после каждого проведенного эксперимента и сохраняются в директорию "reports"
 
-![Image alt](https://github.com/NikolskiyMe/pic/blob/main/diplom.png)
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/report.png)
 
 ---
 ### Модели
