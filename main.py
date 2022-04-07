@@ -37,7 +37,7 @@ if __name__ == '__main__':
     true_events = [y[0] for y in y_test]
     pred_risks = [fn(800) for fn in surv_funcs][:1800]
 
-    metric3 = concordance_index_censored(true_events, true_times, pred_risks)[0]
+    metric3 = concordance_index_censored(true_events, true_times, y_pred)[0]
     print(f'CindexCensored: {metric3}')
     report['GBSA'].append(('cindex', metric3))
 
@@ -79,9 +79,9 @@ if __name__ == '__main__':
 
     true_times = [y[1] for y in y_test]
     true_events = [y[0] for y in y_test]
-    pred_risks = [fn(800) for fn in surv_funcs][:1800]
+    # pred_risks = [fn(800) for fn in surv_funcs][:1800]
 
-    metric3 = concordance_index_censored(true_events, true_times, pred_risks)[0]
+    metric3 = concordance_index_censored(true_events, true_times, y_pred)[0]
 
     print(f'CindexCensored: {metric3}')
     report['Survival Tree'].append(('cindex', metric3))
