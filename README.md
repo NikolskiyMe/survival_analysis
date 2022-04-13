@@ -13,13 +13,13 @@
 
 Отчеты генерируются в pdf формат после каждого проведенного эксперимента и сохраняются в директорию "reports"
 
-![Image alt](https://github.com/NikolskiyMe/pic/blob/main/report.png)
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/report2.png)
 
 ---
 ### Модели
 
 1. Все из библиотеки scikit-survival: https://scikit-survival.readthedocs.io/en/stable/index.html
-2. Из библиотеки R - добавить импорт из CRAN
+
 
 ---
 ### Что работает на данный момент
@@ -31,9 +31,8 @@
   3. Проверить все модели и метрики
   4. Передавать параметры модели из main.py
   5. ToDo в коде
-  6. R lib
 
-![Image alt](https://github.com/NikolskiyMe/pic/blob/main/output.png)
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working5.png)
 
 ---
 
