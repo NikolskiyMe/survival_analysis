@@ -25,6 +25,7 @@ if __name__ == '__main__':
 
     pred_risks = [fn(800) for fn in surv_funcs][:1800]
 
+    '''
     metric1 = BrierScore(y_train, y_test, pred_risks)
     print(f'Brier score: {metric1(800)}')
     report['GBSA'].append((metric1.name, metric1(800)))
@@ -32,6 +33,7 @@ if __name__ == '__main__':
     metric2 = CIndexIpcw(y_train, y_test, pred_risks)
     print(f'CindexIpcw: {metric2()}')
     report['GBSA'].append((metric2.name, metric2()))
+    '''
 
     true_times = [y[1] for y in y_test]
     true_events = [y[0] for y in y_test]
@@ -41,12 +43,15 @@ if __name__ == '__main__':
     print(f'CindexCensored: {metric3}')
     report['GBSA'].append(('cindex', metric3))
 
+    print('++++++++++++++++++++++++++')
+
 # ------------------- Exp2
     param = {'alpha': 0.000244140625}
     experiment2 = Experiment(FastSurvivalSVMModel(**param), x, y)
     report['FSSVM'] = []
     chf_funcs, _, y_pred, y_train, y_test = experiment2.get_res
 
+    '''
     metric1 = BrierScore(y_train, y_test, y_pred)
     print(f'Brier score: {metric1(800)}')
     report['FSSVM'].append((metric1.name, metric1(800)))
@@ -54,6 +59,7 @@ if __name__ == '__main__':
     metric2 = CIndexIpcw(y_train, y_test, y_pred)
     print(f'CindexIpcw: {metric2()}')
     report['FSSVM'].append((metric2.name, metric2()))
+    '''
 
     true_times = [y[1] for y in y_test]
     true_events = [y[0] for y in y_test]
@@ -64,11 +70,14 @@ if __name__ == '__main__':
     print(f'CindexCensored: {metric3}')
     report['FSSVM'].append(('cindex', metric3))
 
+    print('++++++++++++++++++++++++++')
+
 # ------------------- Exp3
     experiment3 = Experiment(SurvivalTreeModel(), x, y)
     report['Survival Tree'] = []
     _, _, y_pred, y_train, y_test = experiment3.get_res
 
+    '''
     metric1 = BrierScore(y_train, y_test, y_pred)
     print(f'Brier score: {metric1(800)}')
     report['Survival Tree'].append((metric1.name, metric1(800)))
@@ -76,6 +85,7 @@ if __name__ == '__main__':
     metric2 = CIndexIpcw(y_train, y_test, y_pred)
     print(f'CindexIpcw: {metric2()}')
     report['Survival Tree'].append((metric2.name, metric2()))
+    '''
 
     true_times = [y[1] for y in y_test]
     true_events = [y[0] for y in y_test]
@@ -85,6 +95,8 @@ if __name__ == '__main__':
 
     print(f'CindexCensored: {metric3}')
     report['Survival Tree'].append(('cindex', metric3))
+
+    print('++++++++++++++++++++++++++')
 
 # ------------------- Exp4
     experiment4 = Experiment(RandomSurvivalForestModel(n_estimators=1000,
@@ -96,6 +108,7 @@ if __name__ == '__main__':
     report['RSF'] = []
     _, surv_funcs, y_pred, y_train, y_test = experiment4.get_res
 
+    '''
     metric1 = BrierScore(y_train, y_test, y_pred)
     print(f'Brier score: {metric1(800)}')
     report['RSF'].append((metric1.name, metric1(800)))
@@ -103,6 +116,7 @@ if __name__ == '__main__':
     metric2 = CIndexIpcw(y_train, y_test, y_pred)
     print(f'CindexIpcw: {metric2()}')
     report['RSF'].append((metric2.name, metric2()))
+    '''
 
     true_times = [y[1] for y in y_test]
     true_events = [y[0] for y in y_test]
@@ -111,5 +125,7 @@ if __name__ == '__main__':
     metric3 = c_index_censored(y_pred, true_times, true_events)
     print(f'CindexCensored: {metric3}')
     report['RSF'].append(('cindex', metric3))
+
+    print('++++++++++++++++++++++++++')
 
     get_report('test', report)
