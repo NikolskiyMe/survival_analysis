@@ -2,6 +2,8 @@ import time
 
 from sklearn.model_selection import train_test_split
 
+from utils.report_generation import get_report
+
 
 class Experiment:
     def __init__(self, X, y):
@@ -45,24 +47,25 @@ class Experiment:
         pass
 
     def run(self, in_report=True):
-        if in_report:
-            report_res = {}
-
         print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        report_res = {}
 
         for model in self.models:
 
             print(model.__dict__['model'])
-
-            print()
+            model_params = str(model.__dict__['model'].__dict__)
 
             start_ts = time.time()
             est = model.fit(self.x_train, self.y_train)
             end_ts = time.time()
             tm = end_ts - start_ts
 
-            print(f'>>> Fit {model.name}: OK')
+            print(f'>>> Fit {model.name}: OK\n')
             print(f'>>> Fit time for {model.name}: {round(tm, 3)} sec.')
+
+            if in_report:
+                model_key = (model.name, model_params, round(tm, 3))
+                report_res[model_key] = {}
 
             variables = [i for i in dir(est) if not callable(i)]
 
@@ -78,7 +81,10 @@ class Experiment:
             # draw_function(surv_funcs)  # survival_function
 
             for metric in self._metrics:
-                if metric.name == 'C-index censored':
-                    print(f'>>> CindexCensored: {metric(self.y_test, y_pred)}')
+                res = metric(self.y_test, y_pred)
+                print(f'>>> CindexCensored: {res}')
+                if in_report:
+                    report_res[model_key][metric.name] = round(res, 4)
 
             print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        get_report('Add params', report_res)

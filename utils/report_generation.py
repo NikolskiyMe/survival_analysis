@@ -1,6 +1,7 @@
 """
 Функционал формирования PDF отчета сессии пользователя
 """
+import json
 
 from fpdf import FPDF
 
@@ -9,39 +10,27 @@ def get_report(report_name: str, result: dict) -> None:
     """
     {(Model1.name, params, time): {Metric1.name: score, Metric2.name: score}, ...}
     """
-
-    pdf = FPDF(format='letter', unit='in')
-
+    pdf = FPDF()
+    pdf.alias_nb_pages()
     pdf.add_page()
-    pdf.set_font('Times', '', 10.0)
-    epw = pdf.w - 5 * pdf.l_margin
-    col_width = epw / 5
+    pdf.set_font('Times', '', 12)
+    line_no = 1
+    for model, score in result.items():
+        _model = str(model[0])
+        pdf.cell(0, 10, txt=_model, ln=1)
+        param = model[1]
+        param = param.replace("'", '')
+        param = param.replace(":", ' =')
+        param = param.replace("{", '')
+        param = param.replace("}", '')
 
-    header = ['model', 'parameteres', 'time']
-    metrics = [m[0] for m in result['GBSA']]
+        for _param in param.split(','):
+            pdf.cell(0, 10, txt=_param, ln=1)
+        _time = f'Fit time: {str(model[2])} sec.'
+        pdf.cell(0, 10, txt=_time, ln=1)
+        line_no += 1
+        for score_name, score_value in score.items():
+            _score = f'{score_name}: {score_value}'
+            pdf.cell(0, 10, txt=_score, ln=1)
 
-    header.extend(metrics)
-
-    data = [header]
-
-    for model_name, models_res in result.items():
-        line = [model_name, 'params', 'time']
-        for res in result[model_name]:
-            line.append(res[1])
-        data.append(line)
-
-    pdf.set_font('Times', 'B', 14.0)
-    pdf.cell(epw, 0.0, str(report_name).replace('_', ' '), align='C')
-    pdf.set_font('Times', '', 10.0)
-    pdf.ln(0.5)
-
-    th = pdf.font_size
-
-    for row in data:
-        for datum in row:
-            pdf.cell(col_width, 2 * th, str(datum), border=1)
-
-        pdf.ln(2 * th)
-
-    report_name += '.pdf'
-    pdf.output(f'reports/{report_name}', 'F')
+    pdf.output(f'reports/{report_name}.pdf', 'F')
