@@ -45,16 +45,24 @@ class Experiment:
         pass
 
     def run(self, in_report=True):
+        if in_report:
+            report_res = {}
+
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
         for model in self.models:
-            print(f'{model.name} is fitting ...')
+
+            print(model.__dict__['model'])
+
+            print()
 
             start_ts = time.time()
             est = model.fit(self.x_train, self.y_train)
             end_ts = time.time()
             tm = end_ts - start_ts
 
-            print(f'Fit {model.name}: OK')
-            print(f'Fit time for {model.name}: {round(tm, 3)} sec.')
+            print(f'>>> Fit {model.name}: OK')
+            print(f'>>> Fit time for {model.name}: {round(tm, 3)} sec.')
 
             variables = [i for i in dir(est) if not callable(i)]
 
@@ -71,6 +79,6 @@ class Experiment:
 
             for metric in self._metrics:
                 if metric.name == 'C-index censored':
-                    print(f'CindexCensored: {metric(self.y_test, y_pred)}')
+                    print(f'>>> CindexCensored: {metric(self.y_test, y_pred)}')
 
-            print('++++++++++++++++++++++++++++')
+            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')

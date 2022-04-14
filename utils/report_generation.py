@@ -5,13 +5,11 @@
 from fpdf import FPDF
 
 
-def get_report(report_name: str, result: dict, param: tuple = None) -> None:
+def get_report(report_name: str, result: dict) -> None:
     """
-    :param report_name: имя файла с отчетом
-    :param result: словарь вида {(<имя модели: str>, <список параметров: str>): {<имя метрики>: <результат>, ...}, ...}
-    :return: None
-    :param: Кортеж с параметрами модели и временем обучения
+    {(Model1.name, params, time): {Metric1.name: score, Metric2.name: score}, ...}
     """
+
     pdf = FPDF(format='letter', unit='in')
 
     pdf.add_page()

@@ -18,3 +18,5 @@ class BaseModel:
     def name(self):
         return self.__class__.__name__
 
+    def params(self):
+        return self.params
