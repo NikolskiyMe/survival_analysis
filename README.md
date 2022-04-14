@@ -24,15 +24,8 @@
 ---
 ### Что работает на данный момент
 
-План:
-  
-  1. Передавать параметры в отчет
-  2. Перетащить графики в отчет
-  3. Проверить все модели и метрики
-  4. Передавать параметры модели из main.py
-  5. ToDo в коде
 
-![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working5.png)
+![Image alt](https://github.com/NikolskiyMe/pic/blob/main/working6.png)
 
 ---
 
