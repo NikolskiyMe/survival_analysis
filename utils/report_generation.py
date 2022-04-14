@@ -5,12 +5,6 @@
 from fpdf import FPDF
 
 
-# ToDo:
-#  1. Отображать графики -- найти как вставлять в pdf
-#  2. Выделять цветом лучшие значения
-#  3. Если неудача - raise CreateReportError
-#  4. Расширить столбец имени модели/использовать алиасы
-
 def get_report(report_name: str, result: dict, param: tuple = None) -> None:
     """
     :param report_name: имя файла с отчетом

@@ -1,83 +1,67 @@
 from sksurv.metrics import (
     concordance_index_censored,
-    brier_score,
-    concordance_index_ipcw,
-    cumulative_dynamic_auc,
-    integrated_brier_score
 )
 
 
-def c_index_censored(pred_risks, true_times, true_events):
-    score, _, _, _, _ = concordance_index_censored(true_events, true_times,
-                                                   pred_risks)
-    return score
+class MyCIndex:
+    def __init__(self, n_samples, tied_tol=1e-8):
+        self.n_samples = n_samples
+        self.tied_tol = tied_tol
 
+    def __call__(self, y_test, y_pred):
 
-class Score:
-    def __init__(self, survival_train, survival_test, estimate):
-        self.survival_train = survival_train
-        self.survival_test = survival_test
-        self.estimate = estimate
+        # ToDo: Куда n_samples и что передавать в __call__ ?
 
+        event_indicator = [y[0] for y in y_test]
+        event_time = [y[1] for y in y_test]
+        estimate = y_pred[:1800]
 
-class BrierScore(Score):
-    def __init__(self, survival_train, survival_test, estimate):
-        super().__init__(survival_train, survival_test, estimate)
+        score = concordance_index_censored(event_indicator=event_indicator,
+                                           event_time=event_time,
+                                           estimate=estimate,
+                                           tied_tol=self.tied_tol)
 
-    def __call__(self, times):
-        _, score = brier_score(self.survival_train,
-                               self.survival_test,
-                               self.estimate,
-                               times)
         return score[0]
 
     @property
     def name(self):
-        return self.__class__.__name__
+        return 'C-index censored'
 
 
-class CIndexIpcw(Score):
-    def __init__(self, survival_train, survival_test, estimate):
-        super().__init__(survival_train, survival_test, estimate)
+class MyBrierScore:
+    def __init__(self, n_train_samples, n_samples, n_times):
+        self.n_train_samples = n_train_samples
+        self.n_samples = n_samples
+        self.n_times = n_times
 
     def __call__(self):
-        score, _, _, _, _ = concordance_index_ipcw(self.survival_train,
-                                                   self.survival_test,
-                                                   self.estimate)
-        return score
-
-    @property
-    def name(self):
-        return self.__class__.__name__
+        pass
 
 
-class CumulativeDynmicAuc(Score):
-    def __init__(self, survival_train, survival_test, estimate):
-        super().__init__(survival_train, survival_test, estimate)
+class MyCIndexIPCW:
+    def __init__(self, n_train_samples, n_samples, tau=None, tied_tol=1e-08):
+        self.n_train_samples = n_train_samples
+        self.n_samples = n_samples
 
-    def __call__(self, times):
-        _, score = cumulative_dynamic_auc(self.survival_train,
-                                          self.survival_test,
-                                          self.estimate,
-                                          times)
-        return score
-
-    @property
-    def name(self):
-        return self.__class__.__name__
+    def __call__(self):
+        pass
 
 
-class IntegratedBrierScore(Score):
-    def __init__(self, survival_train, survival_test, estimate):
-        super().__init__(survival_train, survival_test, estimate)
+class MyCumulativeDynamicAuc:
+    def __init__(self, n_train_samples, n_samples, n_times, tied_tol=1e-08):
+        self.n_train_samples = n_train_samples
+        self.n_samples = n_samples
+        self.n_times = n_times
 
-    def __call__(self, times):
-        score = integrated_brier_score(self.survival_train,
-                                       self.survival_test,
-                                       self.estimate,
-                                       times)
-        return score
+    def __call__(self):
+        pass
 
-    @property
-    def name(self):
-        return self.__class__.__name__
+
+class MyIntegratedBrierScore:
+    def __init__(self, n_train_samples, n_samples, n_times):
+        self.n_train_samples = n_train_samples
+        self.n_samples = n_samples
+        self.n_times = n_times
+
+    def __call__(self):
+        pass

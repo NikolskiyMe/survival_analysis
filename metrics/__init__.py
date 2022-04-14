@@ -1,11 +1,15 @@
 from .main import (
-    BrierScore,
-    CIndexIpcw,
-    CumulativeDynmicAuc,
-    IntegratedBrierScore
+    MyCIndex,
+    MyBrierScore,
+    MyCIndexIPCW,
+    MyIntegratedBrierScore,
+    MyCumulativeDynamicAuc
 )
 
-__all__ = ['BrierScore',
-           'CIndexIpcw',
-           'CumulativeDynmicAuc',
-           'IntegratedBrierScore']
+__all__ = [
+    'MyCIndex',
+    'MyBrierScore',
+    'MyCIndexIPCW',
+    'MyIntegratedBrierScore',
+    'MyCumulativeDynamicAuc'
+]

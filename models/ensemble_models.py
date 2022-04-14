@@ -106,47 +106,6 @@ class GradientBoostingSurvivalAnalysisModel(BaseModel):
         return 'GradientBoostingSurvivalAnalysis'
 
 
-"""
-class GBSA:
-    def __init__(self,
-                 loss="coxph",
-                 learning_rate=0.1,
-                 n_estimators=100,
-                 criterion='friedman_mse',
-                 min_samples_split=2,
-                 min_samples_leaf=1,
-                 min_weight_fraction_leaf=0.,
-                 max_depth=3,
-                 min_impurity_split=None,
-                 min_impurity_decrease=0.,
-                 random_state=None,
-                 max_features=None,
-                 max_leaf_nodes=None,
-                 subsample=1.0,
-                 dropout_rate=0.0,
-                 verbose=0,
-                 ccp_alpha=0.0):
-        params = [loss,
-                  learning_rate,
-                  n_estimators,
-                  criterion,
-                  min_samples_split,
-                  min_samples_leaf,
-                  min_weight_fraction_leaf,
-                  max_depth,
-                  min_impurity_split,
-                  min_impurity_decrease,
-                  random_state,
-                  max_features,
-                  max_leaf_nodes,
-                  subsample,
-                  dropout_rate,
-                  verbose,
-                  ccp_alpha]
-        self.params = {}
-"""
-
-
 class RandomSurvivalForestModel(BaseModel):
     def __init__(self,
                  n_estimators=100,
