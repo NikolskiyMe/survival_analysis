@@ -30,21 +30,22 @@ if __name__ == '__main__':
         ),
     ]
 
-    # Множество метрик
+    # Конфигурация метрик
     METRICS = [
         MyCIndex(n_samples=800, tied_tol=1e-8),
     ]
 
     # --- Конфигурация эксперимента ---
     experiment_1 = Experiment(X, y)
+
     #       --- Обязательно ---
     experiment_1.tts()  # train_test_split
     experiment_1.models = MODELS
+    experiment_1.metrics = METRICS
 
-    #       --- Конфигурация метрик ---
-    experiment_1.metrics = METRICS  # default - c_index censored
     #       --- Опционально ---
-    experiment_1.cross_validation()  # Если вызываем, то будет cv
-    experiment_1.hyperparameters_search()  # Если вызываем, то будет hs
+    experiment_1.cross_validation()  # Если вызываем, то будет cv ToDo
+    experiment_1.hyperparameters_search()  # Если вызываем, то будет hs ToDo
+    
     #       --- Запуск ---
     experiment_1.run(in_report=True)
