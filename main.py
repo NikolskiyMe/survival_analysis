@@ -3,7 +3,8 @@ from utils.experiment import Experiment
 
 from models import *
 from metrics import *
-
+from utils.output_helper import print_report
+from utils.report_generation import make_pdf
 
 if __name__ == '__main__':
 
@@ -35,17 +36,9 @@ if __name__ == '__main__':
         MyCIndex(n_samples=800, tied_tol=1e-8),
     ]
 
-    # --- Конфигурация эксперимента ---
-    experiment_1 = Experiment(X, y)
-
-    #       --- Обязательно ---
-    experiment_1.tts()  # train_test_split
-    experiment_1.models = MODELS
-    experiment_1.metrics = METRICS
-
-    #       --- Опционально ---
-    experiment_1.cross_validation()  # Если вызываем, то будет cv ToDo
+    experiment_1 = Experiment(X, y, test_size=0.5, random_state=1)  # test_size и random_state - опциональные
     experiment_1.hyperparameters_search()  # Если вызываем, то будет hs ToDo
-    
-    #       --- Запуск ---
-    experiment_1.run(in_report=True)
+    result = experiment_1.run(MODELS, METRICS)
+
+    print_report(result)
+    # make_pdf('test_new', result)

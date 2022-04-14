@@ -6,7 +6,7 @@ import json
 from fpdf import FPDF
 
 
-def get_report(report_name: str, result: dict) -> None:
+def make_pdf(report_name: str, result: dict) -> None:
     """
     {(Model1.name, params, time): {Metric1.name: score, Metric2.name: score}, ...}
     """
