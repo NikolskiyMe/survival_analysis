@@ -19,6 +19,7 @@ if __name__ == '__main__':
             random_state=0,
             n_estimators=90
         ),
+        # optimize(GradientBoostingSurvivalAnalysisModel, params={'params...'}, n_splits=100, test_size=0.5 ...),
         SurvivalTreeModel(),
         RandomSurvivalForestModel(
             n_estimators=1000,
@@ -34,16 +35,13 @@ if __name__ == '__main__':
     METRICS = [
         MyCIndex(tied_tol=1e-8),
         # MyBrierScore(), не работает,
-        MyCIndexIPCW(tau=None, tied_tol=1e-08),
+        # MyCIndexIPCW(tau=None, tied_tol=1e-08),
         # MyCumulativeDynamicAuc(times=800, tied_tol=1e-08), не работает
-        MyIntegratedBrierScore(times=(300, 450))
+        # MyIntegratedBrierScore(times=(300, 450))
     ]
 
-    experiment_1 = Experiment(X, y, test_size=0.2, random_state=1)  # test_size и random_state - опциональные
-    experiment_1.hyperparameters_search()  # Если вызываем, то будет hs ToDo
-    result = experiment_1.run(MODELS, METRICS)
+    experiment_1 = Experiment(test_size=0.2, num_of_repeat=5)
+    result = experiment_1.run(X, y, MODELS, METRICS)
 
-    print_report(result)
+    # print_report(result)
     # make_pdf('test_new', result)
-
-    # experiment_2 = ExperimentCV()

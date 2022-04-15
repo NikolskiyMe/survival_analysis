@@ -4,24 +4,20 @@ from sklearn.model_selection import train_test_split
 
 
 class Experiment:
-    def __init__(self, X, y, test_size=None, random_state=None):
-        self.X = X
-        self.y = y
-
+    def __init__(self, test_size=None, num_of_repeat=1):
         self.test_size = test_size
-        self.random_state = random_state
+        self.num_of_repeat = num_of_repeat
 
     def hyperparameters_search(self, *args, **kwargs):
         pass
 
-    def run(self, models, metrics, num_of_repeat=1) -> dict:
+    def run(self, X, y, models, metrics) -> dict:
         report_res = {}
         print('START.\n')
 
-        for num_experiment in range(num_of_repeat):
+        for num_experiment in range(self.num_of_repeat):
 
-            x_train, x_test, y_train, y_test = train_test_split(
-                self.X, self.y, test_size=self.test_size, random_state=self.random_state)
+            x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=self.test_size)
             for model in models:
                 model_params = str(model.__dict__['model'].__dict__)
 
@@ -40,9 +36,9 @@ class Experiment:
                 chf_func, surv_func = None, None
 
                 if 'predict_cumulative_hazard_function' in variables:
-                    chf_func = est.predict_cumulative_hazard_function(self.X)
+                    chf_func = est.predict_cumulative_hazard_function(X)
                 if 'predict_survival_function' in variables:
-                    surv_func = est.predict_survival_function(self.X)
+                    surv_func = est.predict_survival_function(X)
 
                 y_pred = est.predict(x_test)
 
@@ -73,6 +69,7 @@ class Experiment:
                         print('    >>> Integrated brier score calculating: OK')
 
                     report_res[model_key][metric.name] = res
+                    print(f'{metric.name}-{num_experiment}: {res}')
 
             print('DONE.')
 
