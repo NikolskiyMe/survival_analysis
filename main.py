@@ -3,8 +3,7 @@ from utils.experiment import Experiment
 
 from models import *
 from metrics import *
-from utils.output_helper import print_report
-from utils.report_generation import make_pdf
+from utils.report import make_pdf, print_report
 
 if __name__ == '__main__':
 
@@ -33,12 +32,18 @@ if __name__ == '__main__':
 
     # Конфигурация метрик
     METRICS = [
-        MyCIndex(n_samples=800, tied_tol=1e-8),
+        MyCIndex(tied_tol=1e-8),
+        # MyBrierScore(), не работает,
+        MyCIndexIPCW(tau=None, tied_tol=1e-08),
+        # MyCumulativeDynamicAuc(times=800, tied_tol=1e-08), не работает
+        MyIntegratedBrierScore(times=(300, 450))
     ]
 
-    experiment_1 = Experiment(X, y, test_size=0.5, random_state=1)  # test_size и random_state - опциональные
+    experiment_1 = Experiment(X, y, test_size=0.2, random_state=1)  # test_size и random_state - опциональные
     experiment_1.hyperparameters_search()  # Если вызываем, то будет hs ToDo
     result = experiment_1.run(MODELS, METRICS)
 
     print_report(result)
     # make_pdf('test_new', result)
+
+    # experiment_2 = ExperimentCV()

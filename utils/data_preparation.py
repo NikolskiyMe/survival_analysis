@@ -29,6 +29,13 @@ def prepare_df(path: str) -> tuple[Any, ndarray]:
     dt = [('Status', '?'), ('Survival_in_days', '<f8')]
     y = np.array([tuple(i) for i in y], dtype=dt)
 
+    n_censored = y.shape[0] - y['Status'].sum()
+    print('\nDATASET:')
+    print(f'>>> Number of observations: {y.shape[0]}')
+    print(
+        '>>> %.1f%% of records are censored' % (n_censored / y.shape[0] * 100))
+    print()
+
     return x, y
 
 

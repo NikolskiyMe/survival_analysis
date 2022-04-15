@@ -4,61 +4,76 @@ from sklearn.model_selection import train_test_split
 
 
 class Experiment:
-    def __init__(self, X, y, test_size=0.5, random_state=1):
+    def __init__(self, X, y, test_size=None, random_state=None):
         self.X = X
         self.y = y
 
-        self._cross_validation_is_setted = False
-        self._hyperparameters_search_is_setted = False
-
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(
-            self.X, self.y, test_size=test_size, random_state=random_state)
-
-        n_censored = y.shape[0] - y['Status'].sum()
-        print('\nDATASET:')
-        print(f'>>> Number of observations: {y.shape[0]}')
-        print('>>> %.1f%% of records are censored' % (n_censored / y.shape[0] * 100))
-        print()
+        self.test_size = test_size
+        self.random_state = random_state
 
     def hyperparameters_search(self, *args, **kwargs):
         pass
 
-    def run(self, models, metrics) -> dict:
+    def run(self, models, metrics, num_of_repeat=1) -> dict:
         report_res = {}
         print('START.\n')
 
-        for model in models:
+        for num_experiment in range(num_of_repeat):
 
-            model_params = str(model.__dict__['model'].__dict__)
+            x_train, x_test, y_train, y_test = train_test_split(
+                self.X, self.y, test_size=self.test_size, random_state=self.random_state)
+            for model in models:
+                model_params = str(model.__dict__['model'].__dict__)
 
-            print(f'>>> Fitting {model.name} ...')
-            start_ts = time.time()
-            est = model.fit(self.x_train, self.y_train)
-            end_ts = time.time()
-            tm = end_ts - start_ts
-            print(f'>>> Fitting {model.name}: OK\n')
+                print(f'>>> Fitting {model.name} ...')
+                start_ts = time.time()
+                est = model.fit(x_train, y_train)
+                end_ts = time.time()
+                tm = end_ts - start_ts
+                print(f'>>> Fitting {model.name}: OK')
 
-            model_key = (model.name, model_params, tm)
-            report_res[model_key] = {}
+                model_key = (model.name, model_params, tm)
+                report_res[model_key] = {}
 
-            variables = [i for i in dir(est) if not callable(i)]
+                variables = [i for i in dir(est) if not callable(i)]
 
-            chf_funcs, surv_funcs = None, None
+                chf_func, surv_func = None, None
 
-            if 'predict_cumulative_hazard_function' in variables:
-                chf_funcs = est.predict_cumulative_hazard_function(self.X)
-            if 'predict_survival_function' in variables:
-                surv_funcs = est.predict_survival_function(self.X)
+                if 'predict_cumulative_hazard_function' in variables:
+                    chf_func = est.predict_cumulative_hazard_function(self.X)
+                if 'predict_survival_function' in variables:
+                    surv_func = est.predict_survival_function(self.X)
 
-            y_pred = est.predict(self.x_test)
+                y_pred = est.predict(x_test)
 
-            # draw_function(chf_funcs)  # cumulative hazard function
-            # draw_function(surv_funcs)  # survival_function
+                # draw_function(chf_func)  # cumulative hazard function
+                # draw_function(surv_func)  # survival_function
 
-            for metric in metrics:
-                res = metric(self.y_test, y_pred)
-                report_res[model_key][metric.name] = res
+                for metric in metrics:
+                    res = []
+                    if metric.name == 'C-index censored':
+                        print('    >>> C-index calculating ...')
+                        res = metric(y_test, y_pred)
+                        print('    >>> C-index calculating: OK')
+                    elif metric.name == 'Brier score':
+                        print('    >>> Brier score calculating ...')
+                        res = metric(y_train, y_test, surv_func)
+                        print('    >>> Brier score calculating: OK')
+                    elif metric.name == 'C-index ipcw':
+                        print('    >>> C-index ipcw calculating ...')
+                        res = metric(y_train, y_test, y_pred)
+                        print('    >>> C-index ipcw calculating: OK')
+                    elif metric.name == 'Cumulative dynamic auc':
+                        print('    >>> Cumulative dynamic auc calculating ...')
+                        res = metric(y_train, y_test, surv_func)
+                        print('    >>> Cumulative dynamic auc calculating: OK')
+                    elif metric.name == 'Integrated brier score':
+                        print('    >>> Integrated brier score calculating ...')
+                        res = metric(y_train, y_test, surv_func)
+                        print('    >>> Integrated brier score calculating: OK')
 
-        print('DONE.')
+                    report_res[model_key][metric.name] = res
+
+            print('DONE.')
 
         return report_res
