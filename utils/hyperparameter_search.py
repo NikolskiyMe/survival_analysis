@@ -21,3 +21,7 @@ def grid_search(estimator, X, y):
     gcv = gcv.fit(X, y)
 
     print(f'{round(gcv.best_score_, 3)} {gcv.best_params_}')
+
+
+def optimize(*args, **kwargs):
+    print('OPTIMIZE OK')

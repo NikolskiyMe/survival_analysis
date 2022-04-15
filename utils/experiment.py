@@ -8,17 +8,19 @@ class Experiment:
         self.test_size = test_size
         self.num_of_repeat = num_of_repeat
 
-    def hyperparameters_search(self, *args, **kwargs):
-        pass
-
     def run(self, X, y, models, metrics) -> dict:
         report_res = {}
+        metric_result = {}
+
         print('START.\n')
 
         for num_experiment in range(self.num_of_repeat):
 
             x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=self.test_size)
             for model in models:
+                if metric_result.get(model.name) is None:
+                    metric_result[model.name] = 0
+
                 model_params = str(model.__dict__['model'].__dict__)
 
                 print(f'>>> Fitting {model.name} ...')
@@ -69,8 +71,11 @@ class Experiment:
                         print('    >>> Integrated brier score calculating: OK')
 
                     report_res[model_key][metric.name] = res
-                    print(f'{metric.name}-{num_experiment}: {res}')
+                    metric_result[model.name] += res
 
             print('DONE.')
+
+        for k, v in metric_result.items():
+            print(f'{k}: {v / self.num_of_repeat}')
 
         return report_res

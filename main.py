@@ -41,7 +41,8 @@ if __name__ == '__main__':
     ]
 
     experiment_1 = Experiment(test_size=0.2, num_of_repeat=5)
-    result = experiment_1.run(X, y, MODELS, METRICS)
+    result = experiment_1.run(X=X, y=y, models=MODELS, metrics=METRICS)
+    # result -> сериализовать через json.dumps() / json.loads()
 
     # print_report(result)
     # make_pdf('test_new', result)
