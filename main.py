@@ -1,8 +1,12 @@
+import numpy as np
+from sksurv.svm import FastSurvivalSVM
+
 from utils.data_preparation import prepare_df
 from utils.experiment import Experiment
 
 from models import *
 from metrics import *
+from utils.hyperparameter_search import optimize
 from utils.report import make_pdf, print_report
 
 if __name__ == '__main__':
@@ -19,7 +23,7 @@ if __name__ == '__main__':
             random_state=0,
             n_estimators=90
         ),
-        # optimize(GradientBoostingSurvivalAnalysisModel, params={'params...'}, n_splits=100, test_size=0.5 ...),
+        # optimize(estimator=FastSurvivalSVMModel(), param_grid={'alpha': 2. ** np.arange(-12, 13, 2)}),
         SurvivalTreeModel(),
         RandomSurvivalForestModel(
             n_estimators=1000,
@@ -34,11 +38,17 @@ if __name__ == '__main__':
     # Конфигурация метрик
     METRICS = [
         MyCIndex(tied_tol=1e-8),
-        # MyBrierScore(), не работает,
+        # MyBrierScore(),
         # MyCIndexIPCW(tau=None, tied_tol=1e-08),
-        # MyCumulativeDynamicAuc(times=800, tied_tol=1e-08), не работает
+        # MyCumulativeDynamicAuc(times=800, tied_tol=1e-08),
         # MyIntegratedBrierScore(times=(300, 450))
     ]
+
+    """
+    est = optimize(estimator=FastSurvivalSVM(), param_grid={'alpha': 2. ** np.arange(-12, 13, 2)})
+    est = est.fit(X, y)
+    print(round(est.best_score_, 3), est.best_params_)
+    """
 
     experiment_1 = Experiment(test_size=0.2, num_of_repeat=5)
     result = experiment_1.run(X=X, y=y, models=MODELS, metrics=METRICS)

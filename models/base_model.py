@@ -1,10 +1,10 @@
+import inspect
 from abc import ABC, abstractmethod
 
+from sklearn.base import BaseEstimator
 
-class BaseModel:
-    """
-    Базовый класс для всех моделей
-    """
+
+class BaseModel(BaseEstimator):
     def __init__(self, model):
         self.model = model
 
@@ -20,3 +20,4 @@ class BaseModel:
 
     def params(self):
         return self.params
+

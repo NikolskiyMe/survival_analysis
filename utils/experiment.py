@@ -21,7 +21,7 @@ class Experiment:
                 if metric_result.get(model.name) is None:
                     metric_result[model.name] = 0
 
-                model_params = str(model.__dict__['model'].__dict__)
+                # model_params = str(model.__dict__['model'].__dict__)
 
                 print(f'>>> Fitting {model.name} ...')
                 start_ts = time.time()
@@ -30,8 +30,8 @@ class Experiment:
                 tm = end_ts - start_ts
                 print(f'>>> Fitting {model.name}: OK')
 
-                model_key = (model.name, model_params, tm)
-                report_res[model_key] = {}
+                # model_key = (model.name, model_params, tm)
+                # report_res[model_key] = {}
 
                 variables = [i for i in dir(est) if not callable(i)]
 
@@ -70,7 +70,7 @@ class Experiment:
                         res = metric(y_train, y_test, surv_func)
                         print('    >>> Integrated brier score calculating: OK')
 
-                    report_res[model_key][metric.name] = res
+                    # report_res[model_key][metric.name] = res
                     metric_result[model.name] += res
 
             print('DONE.')
