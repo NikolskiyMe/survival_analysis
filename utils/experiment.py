@@ -12,16 +12,17 @@ class Experiment:
         report_res = {}
         metric_result = {}
 
-        print('START.\n')
+        print('START.')
 
         for num_experiment in range(self.num_of_repeat):
+
+            print(f'[{num_experiment+1}/{self.num_of_repeat}]')
 
             x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=self.test_size)
             for model in models:
                 if metric_result.get(model.name) is None:
                     metric_result[model.name] = 0
 
-                # model_params = str(model.__dict__['model'].__dict__)
 
                 print(f'>>> Fitting {model.name} ...')
                 start_ts = time.time()
@@ -42,12 +43,20 @@ class Experiment:
                 if 'predict_survival_function' in variables:
                     surv_func = est.predict_survival_function(X)
 
-                y_pred = est.predict(x_test)
+                if model.name.startswith("Optimize "):
+                    pass
+                else:
+                    y_pred = est.predict(x_test)
 
                 # draw_function(chf_func)  # cumulative hazard function
                 # draw_function(surv_func)  # survival_function
 
+                # Это костыль
                 for metric in metrics:
+                    if model.name.startswith("Optimize "):
+                        print(f'| {metric.name}: {est.best_score_}')
+                        metric_result[model.name] += res
+                        break
                     res = []
                     if metric.name == 'C-index censored':
                         print('    >>> C-index calculating ...')
@@ -72,8 +81,9 @@ class Experiment:
 
                     # report_res[model_key][metric.name] = res
                     metric_result[model.name] += res
+                    print(f'| {metric.name}: {res}')
 
-            print('DONE.')
+        print('DONE.\n')
 
         for k, v in metric_result.items():
             print(f'{k}: {v / self.num_of_repeat}')
