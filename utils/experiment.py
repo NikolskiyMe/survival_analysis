@@ -1,6 +1,10 @@
 import time
 
-from sklearn.model_selection import train_test_split
+import numpy as np
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
+
+from metrics import MyCIndex
+from utils.plt_helper import draw_function
 
 
 class Experiment:
@@ -18,18 +22,19 @@ class Experiment:
 
             print(f'[{num_experiment+1}/{self.num_of_repeat}]')
 
-            x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=self.test_size)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=self.test_size)
             for model in models:
                 if metric_result.get(model.name) is None:
                     metric_result[model.name] = 0
 
-
                 print(f'>>> Fitting {model.name} ...')
                 start_ts = time.time()
-                est = model.fit(x_train, y_train)
+                est = model.fit(X_train, y_train)
                 end_ts = time.time()
                 tm = end_ts - start_ts
                 print(f'>>> Fitting {model.name}: OK')
+
+                print(f'| Time: {tm}')
 
                 # model_key = (model.name, model_params, tm)
                 # report_res[model_key] = {}
@@ -42,11 +47,12 @@ class Experiment:
                     chf_func = est.predict_cumulative_hazard_function(X)
                 if 'predict_survival_function' in variables:
                     surv_func = est.predict_survival_function(X)
+                    # draw_function(surv_func, est)
 
                 if model.name.startswith("Optimize "):
                     pass
                 else:
-                    y_pred = est.predict(x_test)
+                    y_pred = est.predict(X_test)
 
                 # draw_function(chf_func)  # cumulative hazard function
                 # draw_function(surv_func)  # survival_function
@@ -54,7 +60,8 @@ class Experiment:
                 # Это костыль
                 for metric in metrics:
                     if model.name.startswith("Optimize "):
-                        print(f'| {metric.name}: {est.best_score_}')
+                        res = est.best_score_
+                        print(f'| {metric.name}: {res}')
                         metric_result[model.name] += res
                         break
                     res = []
@@ -89,3 +96,29 @@ class Experiment:
             print(f'{k}: {v / self.num_of_repeat}')
 
         return report_res
+
+
+class ExperimentCV:
+    def __init__(self, test_size=None, num_of_repeat=1):
+        self.test_size = test_size
+        self.num_of_repeat = num_of_repeat
+
+    def run(self, X, y, models, metrics=None):
+
+        for model in models:
+
+            cv = KFold(n_splits=8, random_state=42, shuffle=True)
+
+            results = []
+            for train_index, test_index in cv.split(y):
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = y[train_index], y[test_index]
+                model.fit(X_train, y_train)
+                est = model.fit(X_train, y_train)
+                y_pred = est.predict(X_test)
+                metric = MyCIndex(tied_tol=1e-8)
+                res = metric(y_test, y_pred)
+                results.append(res)
+
+            print(results)
+

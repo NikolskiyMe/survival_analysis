@@ -1,13 +1,13 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sksurv.svm import FastSurvivalSVM
 
 from utils.data_preparation import prepare_df
-from utils.experiment import Experiment
+from utils.experiment import Experiment, ExperimentCV
+from utils.hyperparameter_search import Optimize
 
 from models import *
 from metrics import *
-from utils.hyperparameter_search import Optimize
+
+
 from utils.report import make_pdf, print_report
 
 if __name__ == '__main__':
@@ -15,8 +15,7 @@ if __name__ == '__main__':
         '/Users/vladimirnikolskiy/Desktop/practice/Диплом/data.csv'
     )
 
-    # METHODS
-    MODELS = [
+    METHODS = [
         Optimize(estimator=FastSurvivalSVMModel(max_iter=1000,
                                                 tol=1e-5,
                                                 random_state=0),
@@ -41,7 +40,8 @@ if __name__ == '__main__':
         ),
     ]
 
-    # Конфигурация метрик
+    METHODS_NEW = [SurvivalTreeModel()]
+
     METRICS = [
         MyCIndex(tied_tol=1e-8),
         # MyBrierScore(),
@@ -50,8 +50,11 @@ if __name__ == '__main__':
         # MyIntegratedBrierScore(times=(300, 450))
     ]
 
-    experiment_1 = Experiment(test_size=0.2, num_of_repeat=5)
-    result = experiment_1.run(X=X, y=y, models=MODELS, metrics=METRICS)
+    # experiment_1 = Experiment(test_size=0.2, num_of_repeat=1)
+    # result = experiment_1.run(X=X, y=y, models=METHODS, metrics=METRICS)
 
     # print_report(result)
     # make_pdf('test_new', result)
+
+    experiment_cv = ExperimentCV()
+    experiment_cv.run(X, y, models=METHODS_NEW, metrics=METRICS)

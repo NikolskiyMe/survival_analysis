@@ -1,8 +1,14 @@
 from matplotlib import pyplot as plt
 
 
-def draw_function(chf_funcs):
-    for fn in chf_funcs:
-        plt.step(fn.x, fn(fn.x), where="post")
-    plt.ylim(0, 1)
-    plt.show()
+def draw_function(func, est):
+    try:
+        for i, s in enumerate(func):
+            plt.step(est.event_times_, s, where="post", label=str(i))
+        plt.ylabel("Survival probability")
+        plt.xlabel("Time in days")
+        plt.legend()
+        plt.grid(True)
+    except AttributeError:
+        # raise err
+        print('Не ОК')

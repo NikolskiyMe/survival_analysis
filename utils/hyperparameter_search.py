@@ -40,4 +40,3 @@ class Optimize(BaseModel):
     @property
     def name(self):
         return f'Optimize {self.model.name}'
-
