@@ -40,8 +40,6 @@ if __name__ == '__main__':
         ),
     ]
 
-    METHODS_NEW = [SurvivalTreeModel()]
-
     METRICS = [
         MyCIndex(tied_tol=1e-8),
         # MyBrierScore(),
@@ -57,4 +55,4 @@ if __name__ == '__main__':
     # make_pdf('test_new', result)
 
     experiment_cv = ExperimentCV()
-    experiment_cv.run(X, y, models=METHODS_NEW, metrics=METRICS)
+    experiment_cv.run(X, y, models=METHODS, metrics=METRICS)
