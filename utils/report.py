@@ -1,10 +1,7 @@
 from fpdf import FPDF
 
 
-def make_pdf(report_name: str, result: dict) -> None:
-    """
-    {(Model1.name, params, time): {Metric1.name: score, Metric2.name: score}, ...}
-    """
+def make_pdf(report_name: str, result) -> None:
     pdf = FPDF()
     pdf.alias_nb_pages()
     pdf.add_page()
@@ -31,30 +28,7 @@ def make_pdf(report_name: str, result: dict) -> None:
     pdf.output(f'reports/{report_name}.pdf', 'F')
 
 
-def print_report(report_dict):
-    print('\n----REPORT BEGIN---------------------------------\n')
+def print_report(report):
+    for r in report:
+        print(r)
 
-    for key, value in report_dict.items():
-
-        print('-------------------------------------')
-        print(f'Model: {key[0]}')
-        print(f'Fit time: {key[2]} sec.')
-        for metric_name, metric_res in value.items():
-            print(f'{metric_name}: {metric_res}')
-
-        print(f'\n--------PARAMETERS--------')
-
-        param = key[1]
-        param = param.replace("'", '')
-        param = param.replace(":", ' =')
-        param = param.replace("{", '')
-        param = param.replace("}", '')
-        param = param.replace("()", '')
-        param = param.replace("(", 'BEGIN PARAMS [')
-        param = param.replace(")", '] END PARAMS')
-        param = param.replace(", ", '\n')
-        print(f'{param}')
-        print(f'-------------------------')
-        print('-------------------------------------')
-
-    print('\n----REPORT END-----------------------------------\n')
