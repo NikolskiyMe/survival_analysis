@@ -29,6 +29,6 @@ def make_pdf(report_name: str, result) -> None:
 
 
 def print_report(report):
-    for r in report:
-        print(r)
+    for k, v in report.items():
+        print(f'---{k}---\n{v}\n')
 

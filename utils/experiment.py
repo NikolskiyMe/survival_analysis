@@ -1,37 +1,53 @@
 import time
 import os
-import numpy as np
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.model_selection import train_test_split, KFold
 
-from metrics import MyCIndex
 from utils.plt_helper import draw_function
 
 clear = lambda: os.system('clear')
 
 
+def mean(lst: list):
+    if len(lst) != 0:
+        return sum(lst) / len(lst)
+    return 0
+
+
 class ModelsResult:
+    """
+    Класс для результатов эксперимента каждого метода из списка
+    """
+
     def __init__(self, model_name=None, model_params=None):
         self._model_name = model_name
         self._model_params = model_params
         self._model_time = None
 
-        self._score = []
-
-    def add_score(self, new_score=None):
-        self._score.append(new_score)
+        self._score = {}
 
     @property
-    def model_time(self):
+    def scores(self):
+        return self._score
+
+    @scores.setter
+    def scores(self, new_score):
+        self._score = new_score
+
+    @property
+    def time(self):
         return self._model_time
 
-    @model_time.setter
-    def model_time(self, new_value):
+    @time.setter
+    def time(self, new_value):
         self._model_time = new_value
+
+    def __repr__(self):
+        return f'Model result of {self._model_name}'
 
     def __str__(self):
         res_str = ''
         res_str += f'[{self._model_name}] fitted for {self._model_time} sec.'
-        for name, value in self._score:
+        for name, value in self._score.items():
             res_str += f'\n\t{name}: {value}'
         return res_str
 
@@ -46,7 +62,8 @@ class Experiment:
 
         for num_experiment in range(self.num_of_repeat):
 
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=self.test_size)
+            X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                                test_size=self.test_size)
             for model in models:
 
                 model_res = ModelsResult(model.name)
@@ -97,20 +114,21 @@ class ExperimentCV:
         self.shuffle = shuffle
 
     def run(self, X, y, models, metrics):
-        report_res = []
+        print("=== Experiment with cross-validation START ===")
+
+        # итоговый словарь
+        report_res = {model.name: ModelsResult(model_name=model.name)
+                      for model in models}
 
         cv = KFold(n_splits=self.n_splits,
                    random_state=self.random_state,
                    shuffle=self.shuffle)
 
         for model in models:
-            sum_time = 0
+            sum_time = 0  # Суммарное время обучения на фолдах
 
-            metric_res = {}
-            for metric in metrics:
-                metric_res[metric.name] = []
-
-            model_res = ModelsResult(model.name)
+            # Словарь метрик для каждой модели
+            metric_res = {metric.name: [] for metric in metrics}
 
             for train_index, test_index in cv.split(y):
                 X_train, X_test = X[train_index], X[test_index]
@@ -130,16 +148,23 @@ class ExperimentCV:
                 for metric in metrics:
                     if model.name.startswith("Optimize "):
                         res = est.best_score_
-                        print(f'| {metric.name}: {res}')
                         metric_res[metric.name].append(res)
                         break
+
                     if metric.name == 'C-index censored':
                         res = metric(y_test, y_pred)
-                        metric_res[metric.name].append(res)
+                        metric_res[metric.name].append(res) if res else ...
 
-                for k, v in metric_res.items():
-                    metric_res[k] = np.mean(metric_res[k])
+                    if metric.name == 'C-index ipcw':
+                        res = metric(y_train, y_test, y_pred)
+                        metric_res[metric.name].append(res) if res else ...
 
-            model_res.model_time = sum_time
+            # Считаем среднее для каждой метрики
+            for k, v in metric_res.items():
+                metric_res[k] = mean(metric_res[k])
 
+            report_res[model.name].scores = metric_res
+            report_res[model.name].time = sum_time
+
+        print("=== Experiment with cross-validation OK. ===\n")
         return report_res

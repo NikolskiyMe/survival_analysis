@@ -65,7 +65,7 @@ if __name__ == '__main__':
     # result_1 = experiment_1.run(X=X, y=y, models=METHODS, metrics=METRICS)
 
     experiment_cv = ExperimentCV()
-    result_2 = experiment_cv.run(X=X, y=y, models=METHODS_TEST, metrics=METRICS)
+    result_2 = experiment_cv.run(X=X, y=y, models=METHODS, metrics=METRICS)
 
     # print_report(result_1)
     print_report(result_2)
