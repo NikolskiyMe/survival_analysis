@@ -57,23 +57,29 @@ class Experiment:
         self.test_size = test_size
         self.num_of_repeat = num_of_repeat
 
-    def run(self, X, y, models, metrics) -> list[ModelsResult]:
-        report_res = []
+    def run(self, X, y, models, metrics) -> dict:
+        print("=== Experiment with repeat START ===")
 
-        for num_experiment in range(self.num_of_repeat):
+        # Итоговый словарь
+        report_res = {model.name: ModelsResult(model_name=model.name)
+                      for model in models}
 
-            X_train, X_test, y_train, y_test = train_test_split(X, y,
-                                                                test_size=self.test_size)
-            for model in models:
+        for model in models:
+            # Суммарное время обучения на повторах
+            sum_time = 0
 
-                model_res = ModelsResult(model.name)
+            # Словарь метрик для каждой модели
+            metric_res = {metric.name: [] for metric in metrics}
+
+            for num_experiment in range(self.num_of_repeat):
+                X_train, X_test, \
+                y_train, y_test = train_test_split(X, y, test_size=self.test_size)
 
                 start_ts = time.time()
                 est = model.fit(X_train, y_train)
                 end_ts = time.time()
                 tm = end_ts - start_ts
-
-                model_res.model_time = tm
+                sum_time += tm
 
                 variables = [i for i in dir(est) if not callable(i)]
 
@@ -93,17 +99,23 @@ class Experiment:
                 for metric in metrics:
                     if model.name.startswith("Optimize "):
                         res = est.best_score_
-                        model_res.add_score((metric.name, res))
+                        metric_res[metric.name].append(res) if res else ...
                         break
                     if metric.name == 'C-index censored':
                         res = metric(y_test, y_pred)
-                        model_res.add_score((metric.name, res))
+                        metric_res[metric.name].append(res) if res else ...
                     elif metric.name == 'C-index ipcw':
                         res = metric(y_train, y_test, y_pred)
-                        model_res.add_score((metric.name, res))
+                        metric_res[metric.name].append(res) if res else ...
 
-                report_res.append(model_res)
+            # Считаем среднее для каждой метрики
+            for k, v in metric_res.items():
+                metric_res[k] = mean(metric_res[k])
 
+            report_res[model.name].scores = metric_res
+            report_res[model.name].time = sum_time
+
+        print("=== Experiment with repeat OK. ===\n")
         return report_res
 
 
@@ -140,6 +152,15 @@ class ExperimentCV:
                 tm = end_ts - start_ts
                 sum_time += tm
 
+                variables = [i for i in dir(est) if not callable(i)]
+
+                chf_func, surv_func = None, None
+
+                if 'predict_cumulative_hazard_function' in variables:
+                    chf_func = est.predict_cumulative_hazard_function(X)
+                if 'predict_survival_function' in variables:
+                    surv_func = est.predict_survival_function(X)
+
                 if model.name.startswith("Optimize "):
                     pass
                 else:
@@ -148,14 +169,12 @@ class ExperimentCV:
                 for metric in metrics:
                     if model.name.startswith("Optimize "):
                         res = est.best_score_
-                        metric_res[metric.name].append(res)
+                        metric_res[metric.name].append(res) if res else ...
                         break
-
-                    if metric.name == 'C-index censored':
+                    elif metric.name == 'C-index censored':
                         res = metric(y_test, y_pred)
                         metric_res[metric.name].append(res) if res else ...
-
-                    if metric.name == 'C-index ipcw':
+                    elif metric.name == 'C-index ipcw':
                         res = metric(y_train, y_test, y_pred)
                         metric_res[metric.name].append(res) if res else ...
 
