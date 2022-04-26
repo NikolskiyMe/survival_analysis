@@ -64,9 +64,8 @@ if __name__ == '__main__':
     experiment_1 = Experiment(test_size=0.2, num_of_repeat=3)
     result_1 = experiment_1.run(X=X, y=y, models=METHODS_TEST, metrics=METRICS)
 
-    # experiment_cv = ExperimentCV()
-    # result_2 = experiment_cv.run(X=X, y=y, models=METHODS_TEST, metrics=METRICS)
+    experiment_cv = ExperimentCV()
+    result_2 = experiment_cv.run(X=X, y=y, models=METHODS_TEST, metrics=METRICS)
 
     print_report(result_1, name_of_experiment='WITH REPEAT')
-    # print('>>> cv <<<')
-    # print_report(result_2)
+    print_report(result_2, name_of_experiment='C-V')

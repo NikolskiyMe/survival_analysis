@@ -86,7 +86,7 @@ class Experiment:
         self.num_of_repeat = num_of_repeat
 
     def run(self, X, y, models, metrics) -> dict:
-        print("=== Experiment with repeat START ======================")
+        print("=== Experiment with repeat START ====================")
 
         # Итоговый словарь
         report_res = {model.name: ModelsResult(model_name=model.name)
@@ -104,13 +104,11 @@ class Experiment:
                 X_train, X_test, \
                 y_train, y_test = train_test_split(X, y, test_size=self.test_size)
 
-                print(f'  === Fitting {model.name}... ===')
                 start_ts = time.time()
                 est = model.fit(X_train, y_train)
                 end_ts = time.time()
                 tm = end_ts - start_ts
                 sum_time += tm
-                print(f'  === Fitting {model.name} OK ===')
 
                 variables = [i for i in dir(est) if not callable(i)]
 
@@ -160,7 +158,7 @@ class ExperimentCV:
         self.shuffle = shuffle
 
     def run(self, X, y, models, metrics):
-        print("=== Experiment with cross-validation START ===")
+        print("=== Experiment with cross-validation START ==========")
 
         # итоговый словарь
         report_res = {model.name: ModelsResult(model_name=model.name)
@@ -174,7 +172,8 @@ class ExperimentCV:
             sum_time = 0  # Суммарное время обучения на фолдах
 
             # Словарь метрик для каждой модели
-            metric_res = {metric.name: [] for metric in metrics}
+            metric_res = {}
+            metric_res_tmp = {metric.name: [] for metric in metrics}
 
             for train_index, test_index in cv.split(y):
                 X_train, X_test = X[train_index], X[test_index]
@@ -203,21 +202,24 @@ class ExperimentCV:
                 for metric in metrics:
                     if model.name.startswith("Optimize "):
                         res = est.best_score_
-                        metric_res[metric.name].append(res) if res else ...
+                        metric_res_tmp[metric.name].append(res) if res else ...
                         break
                     elif metric.name == 'C-index censored':
                         res = metric(y_test, y_pred)
-                        metric_res[metric.name].append(res) if res else ...
+                        metric_res_tmp[metric.name].append(res) if res else ...
                     elif metric.name == 'C-index ipcw':
                         res = metric(y_train, y_test, y_pred)
-                        metric_res[metric.name].append(res) if res else ...
+                        metric_res_tmp[metric.name].append(res) if res else ...
 
             # Считаем среднее для каждой метрики
-            for k, v in metric_res.items():
-                metric_res[k] = mean(metric_res[k])
+            for k, v in metric_res_tmp.items():
+                metric_ci = mean_confidence_interval(metric_res_tmp[k])
+                metric_val = mean(metric_res_tmp[k])
+                metric_res[k] = MetricResult(value=metric_val,
+                              confidence_interval=metric_ci)
 
             report_res[model.name].scores = metric_res
             report_res[model.name].time = sum_time
 
-        print("=== Experiment with cross-validation OK. ===\n")
+        print("=== Experiment with cross-validation OK. ============\n")
         return report_res
