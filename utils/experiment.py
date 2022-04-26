@@ -1,5 +1,8 @@
 import time
 import os
+
+import numpy as np
+from scipy.stats import sem, t
 from sklearn.model_selection import train_test_split, KFold
 
 from utils.plt_helper import draw_function
@@ -13,17 +16,43 @@ def mean(lst: list):
     return 0
 
 
+def mean_confidence_interval(data, confidence=0.95):
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), sem(a)
+    h = se * t.ppf((1 + confidence) / 2., n-1)
+    return m, m-h, m+h
+
+
+class MetricResult:
+    """
+    Класс для значений метрик
+    """
+    def __init__(self, value=0.0, confidence_interval=None):
+        self._value: float = value  # Значение
+        self._confidence_interval: tuple = confidence_interval  # Доверительный интервал
+
+    def __repr__(self):
+        return f'Metric result'
+
+    def __str__(self):
+        return f'  Value: {self._value}\n' \
+               f'  Confidence_interval:\n' \
+               f'      m: {self._confidence_interval[0]}\n' \
+               f'      m-h: {self._confidence_interval[0]}\n' \
+               f'      m+h {self._confidence_interval[0]}\n'
+
+
 class ModelsResult:
     """
     Класс для результатов эксперимента каждого метода из списка
     """
-
     def __init__(self, model_name=None, model_params=None):
-        self._model_name = model_name
-        self._model_params = model_params
-        self._model_time = None
+        self._model_name: str = model_name  # Название модели
+        self._model_params: dict = model_params  # Параметры модели
+        self._model_time: float = 0.0  # Время обучения
 
-        self._score = {}
+        self._score: dict = {}  # Словарь экземпляров MetricResult()
 
     @property
     def scores(self):
@@ -46,9 +75,10 @@ class ModelsResult:
 
     def __str__(self):
         res_str = ''
-        res_str += f'[{self._model_name}] fitted for {self._model_time} sec.'
-        for name, value in self._score.items():
-            res_str += f'\n\t{name}: {value}'
+        res_str += f'---[ {self._model_name} ]--- fitted for {self._model_time} sec.\n'
+        for score_name, score_val in self._score.items():
+            res_str += f'\n <{score_name}>\n'
+            res_str += f'{score_val}\n'
         return res_str
 
 
@@ -58,7 +88,7 @@ class Experiment:
         self.num_of_repeat = num_of_repeat
 
     def run(self, X, y, models, metrics) -> dict:
-        print("=== Experiment with repeat START ===")
+        print("=== Experiment with repeat START ======================")
 
         # Итоговый словарь
         report_res = {model.name: ModelsResult(model_name=model.name)
@@ -69,17 +99,20 @@ class Experiment:
             sum_time = 0
 
             # Словарь метрик для каждой модели
-            metric_res = {metric.name: [] for metric in metrics}
+            metric_res_tmp = {metric.name: [] for metric in metrics}
+            metric_res = {}
 
             for num_experiment in range(self.num_of_repeat):
                 X_train, X_test, \
                 y_train, y_test = train_test_split(X, y, test_size=self.test_size)
 
+                print(f'  === Fitting {model.name}... ===')
                 start_ts = time.time()
                 est = model.fit(X_train, y_train)
                 end_ts = time.time()
                 tm = end_ts - start_ts
                 sum_time += tm
+                print(f'  === Fitting {model.name} OK ===')
 
                 variables = [i for i in dir(est) if not callable(i)]
 
@@ -99,23 +132,26 @@ class Experiment:
                 for metric in metrics:
                     if model.name.startswith("Optimize "):
                         res = est.best_score_
-                        metric_res[metric.name].append(res) if res else ...
+                        metric_res_tmp[metric.name].append(res) if res else ...
                         break
                     if metric.name == 'C-index censored':
                         res = metric(y_test, y_pred)
-                        metric_res[metric.name].append(res) if res else ...
+                        metric_res_tmp[metric.name].append(res) if res else ...
                     elif metric.name == 'C-index ipcw':
                         res = metric(y_train, y_test, y_pred)
-                        metric_res[metric.name].append(res) if res else ...
+                        metric_res_tmp[metric.name].append(res) if res else ...
 
             # Считаем среднее для каждой метрики
-            for k, v in metric_res.items():
-                metric_res[k] = mean(metric_res[k])
+            for k, v in metric_res_tmp.items():
+                metric_ci = mean_confidence_interval(metric_res_tmp[k])
+                metric_val = mean(metric_res_tmp[k])
+                metric_res[k] = MetricResult(value=metric_val,
+                              confidence_interval=metric_ci)
 
             report_res[model.name].scores = metric_res
             report_res[model.name].time = sum_time
 
-        print("=== Experiment with repeat OK. ===\n")
+        print("=== Experiment with repeat OK. ======================\n")
         return report_res
 
 

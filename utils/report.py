@@ -28,7 +28,9 @@ def make_pdf(report_name: str, result) -> None:
     pdf.output(f'reports/{report_name}.pdf', 'F')
 
 
-def print_report(report):
-    for k, v in report.items():
-        print(f'---{k}---\n{v}\n')
+def print_report(report, name_of_experiment=''):
+    print(f'=== EXPERIMENT {name_of_experiment} START ====================')
+    for model_result in report.values():
+        print(f'<BEGIN>\n{model_result}<END>\n')
+    print(f'=== EXPERIMENT {name_of_experiment} STOP =====================')
 

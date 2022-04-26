@@ -2,9 +2,9 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from scipy.stats import sem, t
 from numpy import ndarray
 from pandas import get_dummies
-
 
 def prepare_df(path: str) -> tuple[Any, ndarray]:
 
@@ -25,7 +25,9 @@ def prepare_df(path: str) -> tuple[Any, ndarray]:
     array = df.values
     x = array[:, 2:]
     y = array[:, :2]
+
     y[:, 1], y[:, 0] = y[:, 0].copy(), y[:, 1].copy()
+
     dt = [('Status', '?'), ('Survival_in_days', '<f8')]
     y = np.array([tuple(i) for i in y], dtype=dt)
 
