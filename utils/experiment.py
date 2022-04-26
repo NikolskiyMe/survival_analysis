@@ -5,8 +5,6 @@ import numpy as np
 from scipy.stats import sem, t
 from sklearn.model_selection import train_test_split, KFold
 
-from utils.plt_helper import draw_function
-
 clear = lambda: os.system('clear')
 
 
@@ -39,8 +37,8 @@ class MetricResult:
         return f'  Value: {self._value}\n' \
                f'  Confidence_interval:\n' \
                f'      m: {self._confidence_interval[0]}\n' \
-               f'      m-h: {self._confidence_interval[0]}\n' \
-               f'      m+h {self._confidence_interval[0]}\n'
+               f'      m-h: {self._confidence_interval[1]}\n' \
+               f'      m+h {self._confidence_interval[2]}\n'
 
 
 class ModelsResult:
